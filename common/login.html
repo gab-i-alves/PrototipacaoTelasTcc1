@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.5;
@@ -20,7 +20,7 @@
             display: flex;
             min-height: 100vh;
         }
-        
+
         a {
             text-decoration: none;
             color: #7e22ce;
@@ -30,14 +30,14 @@
         a:hover {
             text-decoration: underline;
         }
-        
+
         /* Layout */
         .login-container {
             display: flex;
             width: 100%;
             height: 100vh;
         }
-        
+
         .login-image {
             display: none;
             background-color: #7e22ce;
@@ -45,7 +45,7 @@
             background-size: cover;
             background-position: center;
         }
-        
+
         .login-form-container {
             flex: 1;
             display: flex;
@@ -54,7 +54,7 @@
             padding: 2rem;
             max-width: 100%;
         }
-        
+
         .login-box {
             background-color: white;
             border-radius: 0.5rem;
@@ -64,13 +64,13 @@
             max-width: 28rem;
             margin: 0 auto;
         }
-        
+
         .logo-container {
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
         }
-        
+
         .logo {
             width: 3rem;
             height: 3rem;
@@ -81,23 +81,23 @@
             justify-content: center;
             margin-right: 0.75rem;
         }
-        
+
         .logo span {
             color: white;
             font-size: 1.5rem;
             font-weight: bold;
         }
-        
+
         .logo-text {
             font-size: 1.5rem;
             font-weight: bold;
             color: #5b21b6;
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-label {
             display: block;
             font-size: 0.875rem;
@@ -105,7 +105,7 @@
             margin-bottom: 0.5rem;
             color: #4b5563;
         }
-        
+
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -114,22 +114,22 @@
             font-size: 1rem;
             transition: border-color 0.15s ease-in-out;
         }
-        
+
         .form-input:focus {
             outline: none;
             border-color: #7e22ce;
             box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
         }
-        
+
         .checkbox-container {
             display: flex;
             align-items: center;
         }
-        
+
         .remember-checkbox {
             margin-right: 0.5rem;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -141,28 +141,28 @@
             cursor: pointer;
             border: none;
         }
-        
+
         .btn-primary {
             background-color: #7e22ce;
             color: white;
             width: 100%;
         }
-        
+
         .btn-primary:hover {
             background-color: #6b21a8;
         }
-        
+
         .text-center {
             text-align: center;
         }
-        
+
         .login-footer {
             margin-top: 1.5rem;
             display: flex;
             justify-content: space-between;
             font-size: 0.875rem;
         }
-        
+
         .divider {
             display: flex;
             align-items: center;
@@ -170,28 +170,28 @@
             color: #6b7280;
             font-size: 0.875rem;
         }
-        
+
         .divider::before, .divider::after {
             content: "";
             flex: 1;
             border-top: 1px solid #e5e7eb;
         }
-        
+
         .divider::before {
             margin-right: 1rem;
         }
-        
+
         .divider::after {
             margin-left: 1rem;
         }
-        
+
         /* Tabs para tipo de usuário */
         .user-tabs {
             display: flex;
             margin-bottom: 1.5rem;
             border-bottom: 1px solid #e5e7eb;
         }
-        
+
         .tab {
             padding: 0.75rem 1.5rem;
             font-weight: 500;
@@ -200,21 +200,21 @@
             flex: 1;
             text-align: center;
         }
-        
+
         .tab.active {
             color: #7e22ce;
             border-bottom-color: #7e22ce;
         }
-        
+
         /* Form content */
         .form-content {
             display: none;
         }
-        
+
         .form-content.active {
             display: block;
         }
-        
+
         /* Responsividade */
         @media (min-width: 768px) {
             .login-image {
@@ -234,7 +234,7 @@
         <div class="login-form-container">
             <div class="login-box">
                 <div class="logo-container">
-                    <a href="index.html" class="logo">
+                    <a href="../common/index.html" class="logo">
                         <span>P</span>
                     </a>
                     <h1 class="logo-text">ParkinsonCheck</h1>
@@ -247,7 +247,7 @@
                 </div>
                 
                 <!-- Formulário de Paciente -->
-                <form id="paciente-form" class="form-content active" action="dashboard_paciente.html" method="post">
+                <form id="paciente-form" class="form-content active" action="../paciente_att/dashboard_paciente.html" method="post">
                     <div class="form-group">
                         <label for="email_paciente" class="form-label">E-mail ou CPF</label>
                         <input type="text" id="email_paciente" class="form-input" placeholder="Digite seu e-mail ou CPF">
@@ -268,7 +268,7 @@
                     </div>
                 
                     <div class="login-footer">
-                        <a href="recuperar_senha.html">Esqueci minha senha</a>
+                        <a href="../common/recuperar_senha.html">Esqueci minha senha</a>
                     </div>
                     
                     <div class="divider">ou</div>
@@ -276,13 +276,13 @@
                     <div class="text-center">
                         <p>Ainda não possui uma conta?</p>
                         <div class="form-group" style="margin-top: 1rem;">
-                            <a href="cadastro_paciente.html" class="btn btn-primary">Cadastre-se agora</a>
+                            <a href="../paciente_att/cadastro_paciente.html" class="btn btn-primary">Cadastre-se agora</a>
                         </div>
                     </div>
                 </form>
                 
                 <!-- Formulário de Médico -->
-                <form id="medico-form" class="form-content" action="dashboard_medico.html" method="post">
+                <form id="medico-form" class="form-content" action="../medico/dashboard_medico.html" method="post">
                     <div class="form-group">
                         <label for="email_medico" class="form-label">E-mail ou CRM</label>
                         <input type="text" id="email_medico" class="form-input" placeholder="Digite seu e-mail ou CRM">
@@ -303,7 +303,7 @@
                     </div>
                 
                     <div class="login-footer">
-                        <a href="recuperar_senha.html">Esqueci minha senha</a>
+                        <a href="../common/recuperar_senha.html">Esqueci minha senha</a>
                     </div>
                     
                     <div class="divider">ou</div>
@@ -311,13 +311,13 @@
                     <div class="text-center">
                         <p>Ainda não possui uma conta?</p>
                         <div class="form-group" style="margin-top: 1rem;">
-                            <a href="cadastro_medico.html" class="btn btn-primary">Cadastre-se como médico</a>
+                            <a href="../medico/cadastro_medico.html" class="btn btn-primary">Cadastre-se como médico</a>
                         </div>
                     </div>
                 </form>
                 
                 <!-- Formulário de Admin -->
-                <form id="admin-form" class="form-content" action="dashboard_admin.html" method="post">
+                <form id="admin-form" class="form-content" action="../admin/dashboard_admin.html" method="post">
                     <div class="form-group">
                         <label for="email_admin" class="form-label">E-mail</label>
                         <input type="text" id="email_admin" class="form-input" placeholder="Digite seu e-mail de administrador">
@@ -338,7 +338,7 @@
                     </div>
                 
                     <div class="login-footer">
-                        <a href="recuperar_senha.html">Esqueci minha senha</a>
+                        <a href="../common/recuperar_senha.html">Esqueci minha senha</a>
                     </div>
                     
                     <div class="divider">Acesso Restrito</div>

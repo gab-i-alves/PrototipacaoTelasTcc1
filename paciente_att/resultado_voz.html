@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Resultado do Teste de Voz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_paciente.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="testes_paciente.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Meus Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="resultados_paciente.html" class="nav-link active">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Resultados</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Testes Disponíveis</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="teste_espiral.html" class="nav-link">
+                                <i class="fas fa-circle-notch nav-icon"></i>
+                                <span>Teste da Espiral</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="teste_voz.html" class="nav-link">
+                                <i class="fas fa-microphone nav-icon"></i>
+                                <span>Teste de Voz</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="meus_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Meus Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="perfil_paciente.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuracoes_paciente.html" class="nav-link">
+                                <i class="fas fa-cog nav-icon"></i>
+                                <span>Configurações</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">João Silva</div>
+                        <div class="user-status">Paciente</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Resultado do Teste de Voz</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">3</div>
+                    </div>
+                    <div class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-title">
+                        <i class="fas fa-microphone"></i>
+                        Teste de Voz - 05/05/2025
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-date">
+                            <i class="far fa-calendar result-date-icon"></i>
+                            <span>05/05/2025 às 10:15</span>
+                        </div>
+                        <div class="result-status attention">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Atenção</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-body">
+                    <div class="result-summary">
+                        <div class="summary-score">
+                            <div class="score-label">Pontuação Geral</div>
+                            <div class="score-value">72/100</div>
+                            <div class="score-badge attention">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Alterações Leves</span>
+                            </div>
+                        </div>
+                        
+                        <div style="flex: 1; padding: 1rem;">
+                            <div class="audio-player" style="width: 100%; background-color: #F9FAFB; border-radius: 0.5rem; padding: 1rem;">
+                                <div style="font-weight: 500; color: #4B5563; text-align: center; margin-bottom: 0.5rem;">
+                                    Sua Gravação
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <button style="width: 3rem; height: 3rem; border-radius: 9999px; background-color: #2563EB; color: white; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; cursor: pointer; flex-shrink: 0;">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <div style="flex: 1; height: 0.5rem; background-color: #E5E7EB; border-radius: 9999px; overflow: hidden; position: relative;">
+                                        <div style="position: absolute; top: 0; left: 0; height: 100%; width: 30%; background-color: #2563EB; border-radius: 9999px;"></div>
+                                    </div>
+                                </div>
+                                <div style="font-size: 0.75rem; display: flex; justify-content: space-between; color: #6B7280; margin-top: 0.5rem;">
+                                    <span>00:09</span>
+                                    <span>00:30</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-visualization">
+                        <div class="visualization-title">Visualização da Onda Sonora</div>
+                        <div class="visualization-container">
+                            <img src="https://via.placeholder.com/800x200/FFFFFF?text=Visualização+de+Onda+Sonora" alt="Visualização de Onda Sonora" style="max-width: 100%; height: auto;">
+                        </div>
+                    </div>
+                    
+                    <div class="result-metrics">
+                        <div class="metric-card">
+                            <div class="metric-title">Tremor Vocal</div>
+                            <div class="metric-value attention">Leve (4.2Hz)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Qualidade da Voz</div>
+                            <div class="metric-value normal">Normal (82%)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Estabilidade de Pitch</div>
+                            <div class="metric-value attention">Variação Moderada</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Pausas na Fala</div>
+                            <div class="metric-value normal">Dentro do Normal</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Amplitude da Voz</div>
+                            <div class="metric-value normal">Adequada</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Clareza da Articulação</div>
+                            <div class="metric-value normal">Boa (78%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="visualization-title" style="margin-top: 2rem;">Comparação com Referência Normal</div>
+                    <div class="visualization-container">
+                        <img src="https://via.placeholder.com/800x300/FFFFFF?text=Gráfico+Comparativo" alt="Gráfico Comparativo" style="max-width: 100%; height: auto;">
+                    </div>
+                    
+                    <div class="result-footer">
+                        <a href="historico_testes.html" class="btn btn-outline">
+                            <i class="fas fa-history btn-icon"></i>
+                            Ver Histórico
+                        </a>
+                        <a href="teste_voz.html" class="btn btn-primary">
+                            <i class="fas fa-redo btn-icon"></i>
+                            Realizar Novo Teste
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header">
+                <h2 class="section-title">Análise Detalhada</h2>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Interpretação dos Resultados</h3>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 1rem;">
+                        Sua análise de voz apresenta algumas alterações leves que merecem atenção. Foram detectadas pequenas oscilações na estabilidade do pitch e um tremor vocal sutil.
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        Estas características podem estar dentro da variação normal para algumas pessoas, mas também podem ser indicadores iniciais de alterações neurológicas. Para uma melhor avaliação, é recomendável discutir estes resultados com seu médico na próxima consulta.
+                    </p>
+                    <p>
+                        <strong>Nota do Sistema:</strong> Embora tenham sido detectadas alterações leves, é importante lembrar que o teste de voz é apenas uma ferramenta de rastreamento e monitoramento. Diversos fatores como estresse, cansaço ou condições temporárias podem influenciar os resultados.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recomendações</h3>
+                </div>
+                <div class="card-body">
+                    <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Recomendamos realizar este teste novamente na próxima semana para verificar a consistência dos resultados.</li>
+                        <li style="margin-bottom: 0.5rem;">Compartilhe estes resultados com seu médico na próxima consulta (20/05/2025).</li>
+                        <li style="margin-bottom: 0.5rem;">Exercícios vocais regulares podem ajudar a melhorar a qualidade da voz e reduzir o tremor vocal.</li>
+                        <li>Se possível, realize o teste em um ambiente mais silencioso para reduzir interferências externas.</li>
+                    </ul>
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+                        <a href="teste_espiral.html" class="btn btn-primary">
+                            <i class="fas fa-circle-notch btn-icon"></i>
+                            Realizar Teste da Espiral
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Exercícios Recomendados</h3>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 1rem;">
+                        Baseados nos resultados do seu teste, recomendamos os seguintes exercícios para ajudar a melhorar a qualidade vocal:
+                    </p>
+                    
+                    <div style="background-color: #F9FAFB; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">1. Exercício de Sustentação Vocal</h4>
+                        <p style="margin-bottom: 0.5rem;">Inspire profundamente e pronuncie a vogal "A" em um tom confortável, tentando mantê-la pelo maior tempo possível com volume constante.</p>
+                        <p><strong>Frequência:</strong> 3 repetições, 2 vezes por dia.</p>
+                    </div>
+                    
+                    <div style="background-color: #F9FAFB; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">2. Exercício de Modulação</h4>
+                        <p style="margin-bottom: 0.5rem;">Pronuncie as vogais "A, E, I, O, U" alterando o tom de voz de grave para agudo gradualmente.</p>
+                        <p><strong>Frequência:</strong> 5 repetições, 1 vez por dia.</p>
+                    </div>
+                    
+                    <div style="background-color: #F9FAFB; border-radius: 0.5rem; padding: 1rem;">
+                        <h4 style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">3. Leitura em Voz Alta</h4>
+                        <p style="margin-bottom: 0.5rem;">Leia textos em voz alta, focando na pronúncia clara e pausada de cada palavra.</p>
+                        <p><strong>Frequência:</strong> 10 minutos diários.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script src="../scripts/app.js"></script>
+</body>
+</html>

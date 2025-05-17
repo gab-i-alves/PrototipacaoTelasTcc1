@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Gerenciamento de Usuários</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard_admin.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Administração</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_admin.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="gerenciamento_usuarios.html" class="nav-link active">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Gerenciar Usuários</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="gerenciamento_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Gerenciar Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="aprovacao_medicos.html" class="nav-link">
+                                <i class="fas fa-clipboard-check nav-icon"></i>
+                                <span>Aprovar Médicos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Admin Sistema</div>
+                        <div class="user-status">Administrador</div>
+                    </div>
+                    <div class="user-menu" id="user-menu-toggle">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Gerenciamento de Usuários</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon" id="notifications-toggle">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">5</div>
+                    </div>
+                    <a href="../common/login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Search and Filter -->
+            <div class="search-filter-container">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Buscar por nome, email ou CPF...">
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option value="">Status</option>
+                        <option value="active">Ativo</option>
+                        <option value="inactive">Inativo</option>
+                    </select>
+                    
+                    <select class="filter-select">
+                        <option value="">Data de Cadastro</option>
+                        <option value="recent">Mais recentes</option>
+                        <option value="oldest">Mais antigos</option>
+                    </select>
+                </div>
+                
+                <button class="action-btn" id="add-user-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Adicionar Usuário</span>
+                </button>
+            </div>
+            
+            <!-- Users Table -->
+            <div class="users-table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>CPF</th>
+                            <th>Data de Cadastro</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar-table">
+                                        <div class="user-avatar-placeholder-table">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="user-fullname">João Silva</div>
+                                </div>
+                            </td>
+                            <td>joao.silva@email.com</td>
+                            <td>123.456.789-00</td>
+                            <td>12/03/2025</td>
+                            <td>
+                                <div class="status-badge active">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Ativo</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="table-action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn disable">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar-table">
+                                        <div class="user-avatar-placeholder-table">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="user-fullname">Maria Oliveira</div>
+                                </div>
+                            </td>
+                            <td>maria.oliveira@email.com</td>
+                            <td>987.654.321-00</td>
+                            <td>05/04/2025</td>
+                            <td>
+                                <div class="status-badge active">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Ativo</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="table-action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn disable">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar-table">
+                                        <div class="user-avatar-placeholder-table">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="user-fullname">Pedro Santos</div>
+                                </div>
+                            </td>
+                            <td>pedro.santos@email.com</td>
+                            <td>456.789.123-00</td>
+                            <td>18/02/2025</td>
+                            <td>
+                                <div class="status-badge inactive">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>Inativo</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="table-action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn enable">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar-table">
+                                        <div class="user-avatar-placeholder-table">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="user-fullname">Ana Ferreira</div>
+                                </div>
+                            </td>
+                            <td>ana.ferreira@email.com</td>
+                            <td>789.123.456-00</td>
+                            <td>23/04/2025</td>
+                            <td>
+                                <div class="status-badge active">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Ativo</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="table-action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn disable">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar-table">
+                                        <div class="user-avatar-placeholder-table">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="user-fullname">Carlos Mendes</div>
+                                </div>
+                            </td>
+                            <td>carlos.mendes@email.com</td>
+                            <td>321.654.987-00</td>
+                            <td>09/01/2025</td>
+                            <td>
+                                <div class="status-badge inactive">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>Inativo</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="table-action-btn edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn enable">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="pagination-item arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="pagination-item page active">1</div>
+                <div class="pagination-item page">2</div>
+                <div class="pagination-item page">3</div>
+                <div class="pagination-item page">4</div>
+                <div class="pagination-item page">5</div>
+                <div class="pagination-item arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <!-- User Menu Modal -->
+    <div class="modal-overlay" id="user-menu-modal">
+        <div class="modal" style="max-width: 300px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Menu do Administrador</h3>
+                <div class="modal-close" id="user-menu-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <a href="perfil_admin.html" class="user-menu-item">
+                    <i class="fas fa-user-circle"></i>
+                    Meu Perfil
+                </a>
+                <a href="../common/login.html" class="user-menu-item danger">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifications Modal -->
+    <div class="modal-overlay" id="notifications-modal">
+        <div class="modal notifications-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Notificações</h3>
+                <div class="modal-close" id="notifications-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="all">Todas</div>
+                        <div class="tab" data-tab="unread">Não lidas (5)</div>
+                    </div>
+                    
+                    <div class="notifications-list">
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Ricardo Martins enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dra. Patrícia Souza enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>3 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon user">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Novo usuário cadastrado</div>
+                                <div class="notification-message">João Silva completou seu cadastro como usuário no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Fernando Costa enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>12 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Gustavo Santos enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>20 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon approval">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico aprovado</div>
+                                <div class="notification-message">Dr. Carlos Santos foi aprovado no sistema. Email de confirmação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 dia atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon reject">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico suspenso</div>
+                                <div class="notification-message">Dr. Marcos Oliveira foi suspenso do sistema. Email de notificação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 dias atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-btn">
+                            <span>Ver todas notificações</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="mark-all-read-btn">
+                    <i class="fas fa-check-double btn-icon"></i>
+                    Marcar todas como lidas
+                </button>
+                <button class="btn btn-outline" id="notifications-close-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit User Modal -->
+    <div class="modal-overlay" id="user-modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Usuário</h3>
+                <div class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="user-name" class="form-label">Nome Completo*</label>
+                        <input type="text" id="user-name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email" class="form-label">Email*</label>
+                        <input type="email" id="user-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-cpf" class="form-label">CPF*</label>
+                        <input type="text" id="user-cpf" class="form-input" required placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-status" class="form-label">Status*</label>
+                        <select id="user-status" class="form-select" required>
+                            <option value="active">Ativo</option>
+                            <option value="inactive">Inativo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password" class="form-label">Senha*</label>
+                        <input type="password" id="user-password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-confirm-password" class="form-label">Confirmar Senha*</label>
+                        <input type="password" id="user-confirm-password" class="form-input" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+                <button class="btn btn-primary" id="save-btn">Salvar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Disable User Confirmation Modal -->
+    <div class="modal-overlay" id="disable-modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Desativar Usuário</h3>
+                <div class="modal-close" id="disable-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja desativar o usuário <strong id="disable-user-name">João Silva</strong>?</p>
+                <p>O usuário não poderá mais acessar o sistema até que seja reativado.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="disable-cancel-btn">Cancelar</button>
+                <button class="btn btn-danger" id="disable-confirm-btn">Desativar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // User Menu Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userMenuModal = document.getElementById('user-menu-modal');
+            const userMenuModalClose = document.getElementById('user-menu-modal-close');
+            
+            userMenuToggle.addEventListener('click', function() {
+                userMenuModal.classList.add('open');
+            });
+            
+            function closeUserMenuModal() {
+                userMenuModal.classList.remove('open');
+            }
+            
+            userMenuModalClose.addEventListener('click', closeUserMenuModal);
+            userMenuModal.addEventListener('click', function(e) {
+                if (e.target === userMenuModal) {
+                    closeUserMenuModal();
+                }
+            });
+            
+            // Notifications Toggle
+            const notificationsToggle = document.getElementById('notifications-toggle');
+            const notificationsModal = document.getElementById('notifications-modal');
+            const notificationsModalClose = document.getElementById('notifications-modal-close');
+            const notificationsCloseBtn = document.getElementById('notifications-close-btn');
+            
+            notificationsToggle.addEventListener('click', function() {
+                notificationsModal.classList.add('open');
+            });
+            
+            function closeNotificationsModal() {
+                notificationsModal.classList.remove('open');
+            }
+            
+            notificationsModalClose.addEventListener('click', closeNotificationsModal);
+            notificationsCloseBtn.addEventListener('click', closeNotificationsModal);
+            notificationsModal.addEventListener('click', function(e) {
+                if (e.target === notificationsModal) {
+                    closeNotificationsModal();
+                }
+            });
+            
+            // Tabs
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
+            });
+            
+            // Mark all as read
+            const markAllReadBtn = document.getElementById('mark-all-read-btn');
+            
+            markAllReadBtn.addEventListener('click', function() {
+                const unreadItems = document.querySelectorAll('.notification-item.unread');
+                
+                unreadItems.forEach(item => {
+                    item.classList.remove('unread');
+                });
+                
+                // Update the notifications count
+                document.querySelector('.notifications-count').textContent = '0';
+                
+                // Update tab counts
+                document.querySelector('.tab[data-tab="unread"]').textContent = 'Não lidas (0)';
+            });
+            
+            // User Modal
+            const addUserBtn = document.getElementById('add-user-btn');
+            const userModalOverlay = document.getElementById('user-modal-overlay');
+            const modalClose = document.getElementById('modal-close');
+            const cancelBtn = document.getElementById('cancel-btn');
+            
+            addUserBtn.addEventListener('click', function() {
+                userModalOverlay.classList.add('open');
+                document.querySelector('.modal-title').textContent = 'Adicionar Usuário';
+                document.getElementById('user-form').reset();
+            });
+            
+            function closeUserModal() {
+                userModalOverlay.classList.remove('open');
+            }
+            
+            modalClose.addEventListener('click', closeUserModal);
+            cancelBtn.addEventListener('click', closeUserModal);
+            
+            // Edit User
+            const editButtons = document.querySelectorAll('.table-action-btn.edit');
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const row = this.closest('tr');
+                    const name = row.querySelector('.user-fullname').textContent;
+                    const email = row.querySelector('td:nth-child(2)').textContent;
+                    const cpf = row.querySelector('td:nth-child(3)').textContent;
+                    const status = row.querySelector('.status-badge').classList.contains('active') ? 'active' : 'inactive';
+                    
+                    document.querySelector('.modal-title').textContent = 'Editar Usuário';
+                    document.getElementById('user-name').value = name;
+                    document.getElementById('user-email').value = email;
+                    document.getElementById('user-cpf').value = cpf;
+                    document.getElementById('user-status').value = status;
+                    document.getElementById('user-password').value = '••••••••';
+                    document.getElementById('user-confirm-password').value = '••••••••';
+                    
+                    userModalOverlay.classList.add('open');
+                });
+            });
+            
+            // Disable User
+            const disableButtons = document.querySelectorAll('.table-action-btn.disable');
+            const disableModalOverlay = document.getElementById('disable-modal-overlay');
+            const disableModalClose = document.getElementById('disable-modal-close');
+            const disableCancelBtn = document.getElementById('disable-cancel-btn');
+            
+            disableButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const row = this.closest('tr');
+                    const name = row.querySelector('.user-fullname').textContent;
+                    
+                    document.getElementById('disable-user-name').textContent = name;
+                    disableModalOverlay.classList.add('open');
+                });
+            });
+            
+            function closeDisableModal() {
+                disableModalOverlay.classList.remove('open');
+            }
+            
+            disableModalClose.addEventListener('click', closeDisableModal);
+            disableCancelBtn.addEventListener('click', closeDisableModal);
+            
+            // Enable User
+            const enableButtons = document.querySelectorAll('.table-action-btn.enable');
+            
+            enableButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const row = this.closest('tr');
+                    const statusCell = row.querySelector('td:nth-child(5)');
+                    
+                    // Na prática, aqui seria feita uma chamada AJAX para ativar o usuário
+                    // Esta é apenas uma simulação para demonstração
+                    statusCell.innerHTML = `
+                        <div class="status-badge active">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Ativo</span>
+                        </div>
+                    `;
+                    
+                    // Atualizar botões de ação
+                    const actionsCell = row.querySelector('td:nth-child(6)');
+                    actionsCell.innerHTML = `
+                        <div class="table-actions">
+                            <a href="#" class="table-action-btn edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" class="table-action-btn disable">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                        </div>
+                    `;
+                    
+                    // Readicionar evento de click aos novos botões
+                    actionsCell.querySelector('.table-action-btn.edit').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const row = this.closest('tr');
+                        const name = row.querySelector('.user-fullname').textContent;
+                        const email = row.querySelector('td:nth-child(2)').textContent;
+                        const cpf = row.querySelector('td:nth-child(3)').textContent;
+                        const status = row.querySelector('.status-badge').classList.contains('active') ? 'active' : 'inactive';
+                        
+                        document.querySelector('.modal-title').textContent = 'Editar Usuário';
+                        document.getElementById('user-name').value = name;
+                        document.getElementById('user-email').value = email;
+                        document.getElementById('user-cpf').value = cpf;
+                        document.getElementById('user-status').value = status;
+                        document.getElementById('user-password').value = '••••••••';
+                        document.getElementById('user-confirm-password').value = '••••••••';
+                        
+                        userModalOverlay.classList.add('open');
+                    });
+                    
+                    actionsCell.querySelector('.table-action-btn.disable').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const row = this.closest('tr');
+                        const name = row.querySelector('.user-fullname').textContent;
+                        
+                        document.getElementById('disable-user-name').textContent = name;
+                        disableModalOverlay.classList.add('open');
+                    });
+                });
+            });
+            
+            // Save User
+            document.getElementById('save-btn').addEventListener('click', function() {
+                // Na prática, aqui seria feita uma validação e uma chamada AJAX para salvar o usuário
+                // Esta é apenas uma simulação para demonstração
+                alert('Usuário salvo com sucesso!');
+                closeUserModal();
+            });
+            
+            // Disable Confirmation
+            document.getElementById('disable-confirm-btn').addEventListener('click', function() {
+                // Na prática, aqui seria feita uma chamada AJAX para desativar o usuário
+                // Esta é apenas uma simulação para demonstração
+                alert('Usuário desativado com sucesso!');
+                closeDisableModal();
+                
+                // Como exemplo, vamos alterar o status do primeiro usuário da tabela
+                const firstRow = document.querySelector('.users-table tbody tr');
+                if (firstRow) {
+                    const statusCell = firstRow.querySelector('td:nth-child(5)');
+                    statusCell.innerHTML = `
+                        <div class="status-badge inactive">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Inativo</span>
+                        </div>
+                    `;
+                    
+                    // Atualizar botões de ação
+                    const actionsCell = firstRow.querySelector('td:nth-child(6)');
+                    actionsCell.innerHTML = `
+                        <div class="table-actions">
+                            <a href="#" class="table-action-btn edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" class="table-action-btn enable">
+                                <i class="fas fa-check"></i>
+                            </a>
+                        </div>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

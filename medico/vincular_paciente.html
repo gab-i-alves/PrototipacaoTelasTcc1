@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Vincular Paciente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+    <style>
+        /* Estilos específicos para a página de vincular paciente */
+        .search-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+
+        .search-help {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.375rem;
+        }
+
+        .tabs-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .tab-item {
+            padding: 0.75rem 1.25rem;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .tab-item.active {
+            color: #7e22ce;
+            border-bottom-color: #7e22ce;
+        }
+
+        .search-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .results-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .results-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .results-count {
+            background-color: #f3f4f6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .results-empty {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .results-empty-icon {
+            font-size: 3rem;
+            color: #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .results-empty-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-empty-description {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .patients-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .patients-table th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .patients-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .patients-table tr:hover td {
+            background-color: #f9fafb;
+        }
+
+        .patient-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .patient-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+
+        .patient-avatar i {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .patient-email {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .link-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .link-status i {
+            margin-right: 0.375rem;
+        }
+
+        .link-status.linked {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .link-status.pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .link-status.not-linked {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .btn-link {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-link.primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+
+        .btn-link.primary:hover {
+            background-color: #6b21a8;
+        }
+
+        .btn-link.secondary {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-link.secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .btn-link.danger {
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-link.danger:hover {
+            background-color: #fecaca;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            border-color: #9ca3af;
+        }
+
+        .pagination-btn.active {
+            background-color: #7e22ce;
+            border-color: #7e22ce;
+            color: white;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .requests-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .request-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .request-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .request-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            display: none;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .modal-close {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            background-color: #f3f4f6;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .modal-close:hover {
+            background-color: #e5e7eb;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+
+        .form-help {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.375rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-actions {
+                flex-direction: column;
+            }
+
+            .search-actions .btn {
+                width: 100%;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .patient-cell {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .patient-avatar {
+                margin-bottom: 0.5rem;
+            }
+
+            .request-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .request-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .patients-table th:nth-child(3),
+            .patients-table td:nth-child(3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_medico.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pacientes_medico.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Pacientes</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Análises</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="testes_medico.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="comparacao_testes.html" class="nav-link">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Comparação de Testes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="vincular_paciente.html" class="nav-link active">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <span>Vincular Paciente</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/perfil_admin.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Vincular Paciente</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Busca de pacientes -->
+            <div class="tab-content active" id="search-tab">
+                <div class="search-container">
+                    <div class="search-header">
+                        <h2 class="search-title">Buscar Paciente para Vinculação</h2>
+                    </div>
+                    
+                    <form class="search-form">
+                        <div class="search-group">
+                            <label class="search-label">E-mail do Paciente</label>
+                            <input type="email" class="search-input" placeholder="exemplo@email.com">
+                            <div class="search-help">Busque pelo e-mail cadastrado pelo paciente no sistema</div>
+                        </div>
+                        
+                        <div class="search-group">
+                            <label class="search-label">CPF do Paciente</label>
+                            <input type="text" class="search-input" placeholder="000.000.000-00">
+                            <div class="search-help">Busque pelo CPF cadastrado pelo paciente no sistema</div>
+                        </div>
+                        
+                        <div class="search-group">
+                            <label class="search-label">Nome do Paciente</label>
+                            <input type="text" class="search-input" placeholder="Nome completo do paciente">
+                            <div class="search-help">Busque pelo nome completo do paciente cadastrado no sistema</div>
+                        </div>
+                    </form>
+                    
+                    <div class="search-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-undo btn-icon"></i>
+                            Limpar Campos
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-search btn-icon"></i>
+                            Buscar Paciente
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="results-container">
+                    <div class="results-header">
+                        <h2 class="results-title">Resultados da Busca</h2>
+                        <div class="results-count">3 pacientes encontrados</div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="patients-table">
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Contato</th>
+                                    <th>Data de Cadastro</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="patient-cell">
+                                            <div class="patient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <div class="patient-name">Roberto Almeida</div>
+                                                <div class="patient-email">roberto.almeida@email.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>(41) 99876-5432</td>
+                                    <td>05/03/2025</td>
+                                    <td>
+                                        <div class="link-status not-linked">
+                                            <i class="fas fa-unlink"></i>
+                                            <span>Não vinculado</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-link primary" onclick="openLinkModal('Roberto Almeida')">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Solicitar Vínculo</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="patient-cell">
+                                            <div class="patient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <div class="patient-name">Carla Souza</div>
+                                                <div class="patient-email">carla.souza@email.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>(41) 98765-4321</td>
+                                    <td>12/04/2025</td>
+                                    <td>
+                                        <div class="link-status pending">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Pendente</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-link secondary" disabled>
+                                            <i class="fas fa-clock"></i>
+                                            <span>Aguardando</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="patient-cell">
+                                            <div class="patient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <div class="patient-name">Rodrigo Oliveira</div>
+                                                <div class="patient-email">rodrigo.oliveira@email.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>(41) 99988-7766</td>
+                                    <td>25/02/2025</td>
+                                    <td>
+                                        <div class="link-status linked">
+                                            <i class="fas fa-link"></i>
+                                            <span>Vinculado</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-link danger">
+                                            <i class="fas fa-user-minus"></i>
+                                            <span>Remover Vínculo</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            Mostrando 1-3 de 3 pacientes
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Solicitações pendentes -->
+            <div class="tab-content" id="pending-tab">
+                <div class="results-container">
+                    <div class="results-header">
+                        <h2 class="results-title">Solicitações de Vínculo Pendentes</h2>
+                        <div class="results-count">3 solicitações</div>
+                    </div>
+                    
+                    <div class="request-item">
+                        <div class="patient-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="request-info">
+                            <div class="patient-name">Carla Souza</div>
+                            <div class="patient-email">carla.souza@email.com</div>
+                            <div class="request-date">Enviado em 12/05/2025 às 10:45</div>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-link secondary">
+                                <i class="fas fa-times"></i>
+                                <span>Cancelar</span>
+                            </button>
+                            <button class="btn-link primary">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Reenviar</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="request-item">
+                        <div class="patient-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="request-info">
+                            <div class="patient-name">Fernando Martins</div>
+                            <div class="patient-email">fernando.martins@email.com</div>
+                            <div class="request-date">Enviado em 10/05/2025 às 15:20</div>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-link secondary">
+                                <i class="fas fa-times"></i>
+                                <span>Cancelar</span>
+                            </button>
+                            <button class="btn-link primary">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Reenviar</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="request-item">
+                        <div class="patient-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="request-info">
+                            <div class="patient-name">Bruna Costa</div>
+                            <div class="patient-email">bruna.costa@email.com</div>
+                            <div class="request-date">Enviado em 09/05/2025 às 09:30</div>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-link secondary">
+                                <i class="fas fa-times"></i>
+                                <span>Cancelar</span>
+                            </button>
+                            <button class="btn-link primary">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Reenviar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab com resultados vazios (exemplo) -->
+            <div class="tab-content" id="empty-results" style="display: none;">
+                <div class="results-container">
+                    <div class="results-header">
+                        <h2 class="results-title">Resultados da Busca</h2>
+                    </div>
+                    
+                    <div class="results-empty">
+                        <div class="results-empty-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="results-empty-title">Nenhum paciente encontrado</h3>
+                        <p class="results-empty-description">
+                            Não encontramos pacientes com os critérios de busca especificados. 
+                            Verifique se os dados foram digitados corretamente ou tente outras informações de busca.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Vincular Paciente -->
+    <div class="modal-backdrop" id="link-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Solicitar Vínculo com Paciente</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Paciente</label>
+                    <div class="patient-cell">
+                        <div class="patient-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="patient-name" id="modal-patient-name">Roberto Almeida</div>
+                            <div class="patient-email">roberto.almeida@email.com</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mensagem para o Paciente (opcional)</label>
+                    <textarea class="form-textarea" placeholder="Digite uma mensagem para o paciente que será incluída no e-mail de solicitação de vínculo..."></textarea>
+                    <div class="form-help">Esta mensagem será enviada junto com a solicitação de vínculo</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="sendLinkRequest()">Enviar Solicitação</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Tab Navigation
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabItems.forEach(item => item.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show the corresponding tab content
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the selected tab content
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+        });
+        
+        // Modal Functions
+        function openLinkModal(patientName) {
+            document.getElementById('modal-patient-name').textContent = patientName;
+            document.getElementById('link-modal').style.display = 'flex';
+            
+            // Set default dates for the modal
+            const today = new Date();
+            const oneYearLater = new Date();
+            oneYearLater.setFullYear(today.getFullYear() + 1);
+            
+            document.querySelectorAll('.modal input[type="date"]')[0].valueAsDate = today;
+            document.querySelectorAll('.modal input[type="date"]')[1].valueAsDate = oneYearLater;
+        }
+        
+        function closeModal() {
+            document.getElementById('link-modal').style.display = 'none';
+        }
+        
+        function sendLinkRequest() {
+            // Simulate sending the request
+            alert('Solicitação de vínculo enviada com sucesso!');
+            closeModal();
+            
+            // Reload or update the page
+            // For demo purposes, we'll just close the modal
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Resultado do Teste da Espiral</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_paciente.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="testes_paciente.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Meus Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="resultados_paciente.html" class="nav-link active">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Resultados</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Testes Disponíveis</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="teste_espiral.html" class="nav-link">
+                                <i class="fas fa-circle-notch nav-icon"></i>
+                                <span>Teste da Espiral</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="teste_voz.html" class="nav-link">
+                                <i class="fas fa-microphone nav-icon"></i>
+                                <span>Teste de Voz</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="meus_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Meus Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="perfil_paciente.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuracoes_paciente.html" class="nav-link">
+                                <i class="fas fa-cog nav-icon"></i>
+                                <span>Configurações</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">João Silva</div>
+                        <div class="user-status">Paciente</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Resultado do Teste da Espiral</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">3</div>
+                    </div>
+                    <div class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-title">
+                        <i class="fas fa-circle-notch"></i>
+                        Teste da Espiral - 12/05/2025
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-date">
+                            <i class="far fa-calendar result-date-icon"></i>
+                            <span>12/05/2025 às 14:30</span>
+                        </div>
+                        <div class="result-status normal">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Normal</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-body">
+                    <div class="result-summary">
+                        <div class="summary-score">
+                            <div class="score-label">Pontuação Geral</div>
+                            <div class="score-value">85/100</div>
+                            <div class="score-badge normal">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Normal</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-score">
+                            <div class="score-label">Comparação com Padrão</div>
+                            <div class="score-value">92%</div>
+                            <div class="score-badge normal">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Alta Similaridade</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-visualization">
+                        <div class="visualization-title">Comparação Visual</div>
+                        <div class="visualization-container">
+                            <img src="https://via.placeholder.com/800x400/FFFFFF?text=Comparação+do+Traçado" alt="Comparação do Traçado" style="max-width: 100%; height: auto;">
+                        </div>
+                    </div>
+                    
+                    <div class="result-metrics">
+                        <div class="metric-card">
+                            <div class="metric-title">Tremor</div>
+                            <div class="metric-value normal">Mínimo (1.2mm)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Precisão</div>
+                            <div class="metric-value normal">Alta (89%)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Velocidade</div>
+                            <div class="metric-value normal">Normal (46s)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Consistência</div>
+                            <div class="metric-value normal">Boa (87%)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Desvio Médio</div>
+                            <div class="metric-value normal">Baixo (1.8mm)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Pressão Aplicada</div>
+                            <div class="metric-value normal">Adequada</div>
+                        </div>
+                    </div>
+                    
+                    <div class="visualization-title" style="margin-top: 2rem;">Análise de Variação ao Longo do Tempo</div>
+                    <div class="visualization-container">
+                        <img src="https://via.placeholder.com/800x300/FFFFFF?text=Gráfico+de+Evolução+Temporal" alt="Gráfico de Evolução Temporal" style="max-width: 100%; height: auto;">
+                    </div>
+                    
+                    <div class="result-footer">
+                        <a href="historico_testes.html" class="btn btn-outline">
+                            <i class="fas fa-history btn-icon"></i>
+                            Ver Histórico
+                        </a>
+                        <a href="teste_espiral.html" class="btn btn-primary">
+                            <i class="fas fa-redo btn-icon"></i>
+                            Realizar Novo Teste
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header">
+                <h2 class="section-title">Análise Detalhada</h2>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Interpretação dos Resultados</h3>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 1rem;">
+                        Com base nos dados coletados durante o teste da espiral, nossa análise indica que seus movimentos motores estão dentro dos parâmetros normais. Não foram detectados sinais significativos de tremor ou instabilidade que pudessem indicar manifestações da doença de Parkinson.
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        Os resultados mostram uma boa coordenação motora fina, com um desvio mínimo do padrão esperado. A consistência do traçado ao longo de toda a espiral sugere controle motor adequado.
+                    </p>
+                    <p>
+                        <strong>Nota do Sistema:</strong> Lembre-se que este teste é uma ferramenta de monitoramento e não substitui avaliações médicas profissionais. Mesmo com resultados positivos, é importante manter o acompanhamento regular com seus médicos.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recomendações</h3>
+                </div>
+                <div class="card-body">
+                    <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Continue realizando o teste da espiral semanalmente para acompanhar qualquer alteração ao longo do tempo.</li>
+                        <li style="margin-bottom: 0.5rem;">Recomendamos também realizar o teste de voz para uma avaliação mais completa.</li>
+                        <li style="margin-bottom: 0.5rem;">Compartilhe estes resultados com seu médico na próxima consulta (20/05/2025).</li>
+                        <li>Exercícios regulares de coordenação motora fina podem ajudar a manter ou melhorar seus resultados.</li>
+                    </ul>
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+                        <a href="teste_voz.html" class="btn btn-primary">
+                            <i class="fas fa-microphone btn-icon"></i>
+                            Realizar Teste de Voz
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script src="../scripts/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Resultados</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+    <style>
+        /* Estilos específicos para Resultados */
+        .results-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .results-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .results-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .results-summary {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-card {
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-trend {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .trend-up {
+            color: #10b981;
+        }
+
+        .trend-down {
+            color: #ef4444;
+        }
+
+        .trend-neutral {
+            color: #6b7280;
+        }
+
+        .trend-icon {
+            margin-right: 0.25rem;
+        }
+
+        .trend-value {
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        .chart-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .chart-time-range {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .time-range-btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .time-range-btn.active {
+            background-color: #7e22ce;
+            color: white;
+            border-color: #7e22ce;
+        }
+
+        .chart-container {
+            height: 300px;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Pseudo chart styles */
+        .chart-line {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .chart-line-spiral {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80%;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.01) 100%);
+            clip-path: polygon(0 100%, 5% 85%, 10% 78%, 15% 72%, 20% 65%, 25% 60%, 30% 65%, 35% 70%, 40% 65%, 45% 50%, 50% 45%, 55% 40%, 60% 45%, 65% 50%, 70% 45%, 75% 30%, 80% 35%, 85% 40%, 90% 38%, 95% 30%, 100% 20%, 100% 100%);
+        }
+
+        .chart-line-spiral::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #8b5cf6;
+            clip-path: polygon(0 100%, 5% 85%, 10% 78%, 15% 72%, 20% 65%, 25% 60%, 30% 65%, 35% 70%, 40% 65%, 45% 50%, 50% 45%, 55% 40%, 60% 45%, 65% 50%, 70% 45%, 75% 30%, 80% 35%, 85% 40%, 90% 38%, 95% 30%, 100% 20%);
+        }
+
+        .chart-line-voice {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80%;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.01) 100%);
+            clip-path: polygon(0 100%, 5% 70%, 10% 75%, 15% 65%, 20% 60%, 25% 62%, 30% 58%, 35% 55%, 40% 45%, 45% 50%, 50% 48%, 55% 52%, 60% 45%, 65% 40%, 70% 42%, 75% 38%, 80% 40%, 85% 35%, 90% 30%, 95% 32%, 100% 25%, 100% 100%);
+        }
+
+        .chart-line-voice::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #3b82f6;
+            clip-path: polygon(0 100%, 5% 70%, 10% 75%, 15% 65%, 20% 60%, 25% 62%, 30% 58%, 35% 55%, 40% 45%, 45% 50%, 50% 48%, 55% 52%, 60% 45%, 65% 40%, 70% 42%, 75% 38%, 80% 40%, 85% 35%, 90% 30%, 95% 32%, 100% 25%);
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .legend-color {
+            width: 1rem;
+            height: 0.5rem;
+            margin-right: 0.5rem;
+            border-radius: 1px;
+        }
+
+        .legend-color.spiral {
+            background-color: #8b5cf6;
+        }
+
+        .legend-color.voice {
+            background-color: #3b82f6;
+        }
+
+        .legend-label {
+            font-weight: 500;
+        }
+
+        .detailed-results {
+            padding: 1.5rem;
+        }
+
+        .results-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .results-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .results-tab {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .results-tab.active {
+            color: #7e22ce;
+            border-bottom-color: #7e22ce;
+        }
+
+        .results-tab-content {
+            display: none;
+        }
+
+        .results-tab-content.active {
+            display: block;
+        }
+
+        .insight-card {
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .insight-header {
+            padding: 1rem;
+            background-color: #f5f3ff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: #7e22ce;
+            display: flex;
+            align-items: center;
+        }
+
+        .insight-title-icon {
+            margin-right: 0.5rem;
+        }
+
+        .insight-body {
+            padding: 1rem;
+        }
+
+        .insight-metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-metric {
+            background-color: white;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .metric-icon.normal {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .metric-icon.attention {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .metric-icon.critical {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+
+        .feedback-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e0e7ff;
+            border-radius: 0.375rem;
+        }
+
+        .feedback-header {
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-text {
+            font-size: 0.875rem;
+            color: #4338ca;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation-list {
+            list-style-type: none;
+            margin-top: 0.5rem;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #4338ca;
+        }
+
+        .recommendation-icon {
+            color: #4f46e5;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn-primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #6b21a8;
+        }
+
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 1.25rem;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #111827;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* User Menu */
+        .user-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f3f4f6;
+            color: #4b5563;
+            transition: background-color 0.2s;
+        }
+
+        .user-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-menu-item:hover {
+            background-color: #f9fafb;
+            text-decoration: none;
+        }
+
+        .user-menu-item.active {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            font-weight: 500;
+        }
+
+        .user-menu-item.danger {
+            color: #ef4444;
+        }
+
+        .user-menu-item.danger:hover {
+            background-color: #fee2e2;
+        }
+
+        .user-menu-item i {
+            margin-right: 0.75rem;
+            font-size: 1.125rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-chart {
+            display: flex;
+            align-items: stretch;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-col {
+            flex: 1;
+            background-color: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            padding: 0.75rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .comparison-img {
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        .comparison-img img {
+            max-width: 100%;
+            height: auto;
+            max-height: 180px;
+        }
+
+        .comparison-text {
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .historical-chart {
+            height: 200px;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .chart-dots {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .chart-dot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .chart-dot-point {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #7e22ce;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chart-dot-point.attention {
+            background-color: #f59e0b;
+        }
+
+        .chart-dot-line {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+        }
+
+        .chart-dot-value {
+            height: 5rem;
+            width: 2px;
+            background-color: #7e22ce;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-dot-value.attention {
+            background-color: #f59e0b;
+        }
+
+        .chart-dot-label {
+            font-size: 0.625rem;
+            color: #6b7280;
+            position: absolute;
+            bottom: -1.25rem;
+            white-space: nowrap;
+            transform: translateX(-50%);
+            left: 50%;
+        }
+
+        .chart-average {
+            position: absolute;
+            top: 80px;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: rgba(156, 163, 175, 0.4);
+            border-top: 1px dashed #9ca3af;
+        }
+
+        .chart-average::after {
+            content: 'Média: 85';
+            position: absolute;
+            right: 1rem;
+            top: -1.5rem;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            background-color: #f9fafb;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="../pages/dashboard_paciente.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="testes_paciente.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Meus Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="resultados_paciente.html" class="nav-link active">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Resultados</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Testes Disponíveis</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="teste_espiral.html" class="nav-link">
+                                <i class="fas fa-circle-notch nav-icon"></i>
+                                <span>Teste da Espiral</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="teste_voz.html" class="nav-link">
+                                <i class="fas fa-microphone nav-icon"></i>
+                                <span>Teste de Voz</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="meus_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Meus Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="perfil_paciente.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuracoes_paciente.html" class="nav-link">
+                                <i class="fas fa-cog nav-icon"></i>
+                                <span>Configurações</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">João Silva</div>
+                        <div class="user-status">Paciente</div>
+                    </div>
+                    <div class="user-menu" id="user-menu-toggle">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Resultados</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon" id="notifications-toggle">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">3</div>
+                    </div>
+                    <a href="login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Results Summary -->
+            <div class="results-card">
+                <div class="results-header">
+                    <h2 class="results-title">Resumo dos Resultados</h2>
+                    <div class="results-filter">
+                        <label class="filter-label">Período:</label>
+                        <select class="filter-select">
+                            <option value="last_30_days">Últimos 30 dias</option>
+                            <option value="last_3_months">Últimos 3 meses</option>
+                            <option value="last_6_months">Últimos 6 meses</option>
+                            <option value="last_year">Último ano</option>
+                            <option value="all_time">Todo o período</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="results-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Testes Realizados</div>
+                        <div class="summary-value">12</div>
+                        <div class="summary-trend trend-up">
+                            <i class="fas fa-arrow-up trend-icon"></i>
+                            <span class="trend-value">8%</span>
+                            <span>em relação ao período anterior</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Pontuação Média Espiral</div>
+                        <div class="summary-value">86/100</div>
+                        <div class="summary-trend trend-up">
+                            <i class="fas fa-arrow-up trend-icon"></i>
+                            <span class="trend-value">2%</span>
+                            <span>em relação ao período anterior</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Pontuação Média Voz</div>
+                        <div class="summary-value">78/100</div>
+                        <div class="summary-trend trend-neutral">
+                            <i class="fas fa-equals trend-icon"></i>
+                            <span class="trend-value">0%</span>
+                            <span>sem alteração significativa</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Consistência dos Testes</div>
+                        <div class="summary-value">92%</div>
+                        <div class="summary-trend trend-up">
+                            <i class="fas fa-arrow-up trend-icon"></i>
+                            <span class="trend-value">5%</span>
+                            <span>maior regularidade nos testes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progression Chart -->
+            <div class="results-card">
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Progressão dos Resultados</h3>
+                        <div class="chart-time-range">
+                            <div class="time-range-btn">1M</div>
+                            <div class="time-range-btn active">3M</div>
+                            <div class="time-range-btn">6M</div>
+                            <div class="time-range-btn">1A</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-line">
+                            <div class="chart-line-spiral"></div>
+                            <div class="chart-line-voice"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color spiral"></div>
+                            <div class="legend-label">Teste da Espiral</div>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color voice"></div>
+                            <div class="legend-label">Teste de Voz</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detailed Results -->
+            <div class="results-card">
+                <div class="results-header">
+                    <h2 class="results-title">Análise Detalhada</h2>
+                </div>
+                
+                <div class="detailed-results">
+                    <div class="results-tabs">
+                        <div class="results-tab active" data-tab="spiral">Teste da Espiral</div>
+                        <div class="results-tab" data-tab="voice">Teste de Voz</div>
+                        <div class="results-tab" data-tab="combined">Análise Combinada</div>
+                    </div>
+                    
+                    <!-- Spiral Test Tab -->
+                    <div class="results-tab-content active" id="spiral-tab">
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-title">
+                                    <i class="fas fa-circle-notch insight-title-icon"></i>
+                                    Análise do Último Teste da Espiral
+                                </div>
+                                <div class="insight-date">12/05/2025</div>
+                            </div>
+                            
+                            <div class="insight-body">
+                                <div class="comparison-chart">
+                                    <div class="comparison-col">
+                                        <div class="comparison-header">Seu Traçado</div>
+                                        <div class="comparison-img">
+                                            <img src="/api/placeholder/250/180?text=Espiral+Realizada" alt="Espiral realizada pelo usuário">
+                                        </div>
+                                        <div class="comparison-text">
+                                            Pontuação: 85/100
+                                        </div>
+                                    </div>
+                                    <div class="comparison-col">
+                                        <div class="comparison-header">Modelo de Referência</div>
+                                        <div class="comparison-img">
+                                            <img src="/api/placeholder/250/180?text=Espiral+Modelo" alt="Espiral modelo de referência">
+                                        </div>
+                                        <div class="comparison-text">
+                                            Similaridade: 92%
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="insight-metric-grid">
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Tremor</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Mínimo (1.2mm)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Precisão</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Alta (89%)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Velocidade</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Normal (46s)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Consistência</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Boa (87%)
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="feedback-section">
+                                    <div class="feedback-header">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Feedback Personalizado
+                                    </div>
+                                    <div class="feedback-text">
+                                        Sua performance no teste da espiral está dentro dos parâmetros normais, com apenas um leve tremor detectado. Recomendamos:
+                                    </div>
+                                    <ul class="recommendation-list">
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Continuar com a mesma frequência de testes para acompanhamento</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Realizar exercícios de coordenação motora fina regularmente</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Compartilhar estes resultados com seu neurologista na próxima consulta</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-title">
+                                    <i class="fas fa-history insight-title-icon"></i>
+                                    Histórico de Resultados - Teste da Espiral
+                                </div>
+                            </div>
+                            
+                            <div class="insight-body">
+                                <div class="historical-chart">
+                                    <div class="chart-average"></div>
+                                    <div class="chart-dots">
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 80px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">12/05</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 85px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">28/04</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 78px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">15/04</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 75px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">05/04</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 70px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">20/03</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 65px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">10/03</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 60px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">25/02</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="feedback-section">
+                                    <div class="feedback-header">
+                                        <i class="fas fa-chart-line"></i>
+                                        Análise de Tendência
+                                    </div>
+                                    <div class="feedback-text">
+                                        Seus resultados no teste da espiral mostram uma tendência de melhora nas últimas semanas. Esta evolução positiva pode estar relacionada à regularidade dos testes ou ao ajuste da medicação.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Voice Test Tab -->
+                    <div class="results-tab-content" id="voice-tab">
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-title">
+                                    <i class="fas fa-microphone insight-title-icon"></i>
+                                    Análise do Último Teste de Voz
+                                </div>
+                                <div class="insight-date">05/05/2025</div>
+                            </div>
+                            
+                            <div class="insight-body">
+                                <div class="insight-metric-grid">
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Tremor Vocal</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon attention">
+                                                <i class="fas fa-exclamation"></i>
+                                            </div>
+                                            Leve (4.2Hz)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Qualidade da Voz</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Normal (82%)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Estabilidade de Pitch</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon attention">
+                                                <i class="fas fa-exclamation"></i>
+                                            </div>
+                                            Variação Moderada
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Pausas na Fala</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            Dentro do Normal
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chart-container" style="height: 150px; margin: 1.5rem 0;">
+                                    <div class="chart-placeholder">
+                                        [Visualização de Onda Sonora]
+                                    </div>
+                                </div>
+                                
+                                <div class="feedback-section">
+                                    <div class="feedback-header">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Feedback Personalizado
+                                    </div>
+                                    <div class="feedback-text">
+                                        Seu teste de voz mostra algumas alterações leves que podem estar associadas a sintomas iniciais. Recomendamos:
+                                    </div>
+                                    <ul class="recommendation-list">
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Monitorar mais frequentemente os parâmetros vocais</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Realizar exercícios de respiração e vocalização diariamente</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Discutir essas alterações vocais com seu médico na próxima consulta</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-title">
+                                    <i class="fas fa-history insight-title-icon"></i>
+                                    Histórico de Resultados - Teste de Voz
+                                </div>
+                            </div>
+                            
+                            <div class="insight-body">
+                                <div class="historical-chart">
+                                    <div class="chart-average"></div>
+                                    <div class="chart-dots">
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 70px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">05/05</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 68px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">20/04</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 65px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">05/04</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 72px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">20/03</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 70px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">05/03</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value attention" style="height: 67px;"></div>
+                                            <div class="chart-dot-point attention"></div>
+                                            <div class="chart-dot-label">20/02</div>
+                                        </div>
+                                        <div class="chart-dot">
+                                            <div class="chart-dot-value" style="height: 75px;"></div>
+                                            <div class="chart-dot-point"></div>
+                                            <div class="chart-dot-label">05/02</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="feedback-section">
+                                    <div class="feedback-header">
+                                        <i class="fas fa-chart-line"></i>
+                                        Análise de Tendência
+                                    </div>
+                                    <div class="feedback-text">
+                                        Seus resultados no teste de voz mostram variações leves, com uma tendência de estabilização nos últimos meses. As alterações vocais são mais sutis comparadas ao início do monitoramento.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Combined Analysis Tab -->
+                    <div class="results-tab-content" id="combined-tab">
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-title">
+                                    <i class="fas fa-chart-bar insight-title-icon"></i>
+                                    Análise Combinada dos Testes
+                                </div>
+                            </div>
+                            
+                            <div class="insight-body">
+                                <div class="insight-metric-grid">
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Índice Composto</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            83/100 (Normal)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Coordenação Motora</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            87/100 (Boa)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Função Vocal</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon attention">
+                                                <i class="fas fa-exclamation"></i>
+                                            </div>
+                                            78/100 (Atenção)
+                                        </div>
+                                    </div>
+                                    <div class="insight-metric">
+                                        <div class="metric-label">Progresso Geral</div>
+                                        <div class="metric-value">
+                                            <div class="metric-icon normal">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </div>
+                                            Positivo (+3%)
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chart-container" style="height: 250px; margin: 1.5rem 0;">
+                                    <div class="chart-placeholder">
+                                        [Gráfico de Radar Comparativo - Áreas de Desempenho]
+                                    </div>
+                                </div>
+                                
+                                <div class="feedback-section">
+                                    <div class="feedback-header">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Avaliação Integrada
+                                    </div>
+                                    <div class="feedback-text">
+                                        Sua análise combinada mostra um bom controle motor, com algumas alterações vocais leves que merecem atenção. O progresso geral é positivo, indicando que a conduta atual está adequada.
+                                    </div>
+                                    <ul class="recommendation-list">
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Manter a regularidade dos testes para acompanhamento contínuo</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Priorizar exercícios vocais e de respiração diariamente</span>
+                                        </li>
+                                        <li class="recommendation-item">
+                                            <i class="fas fa-check-circle recommendation-icon"></i>
+                                            <span>Compartilhar a análise combinada com sua equipe médica</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="btn btn-outline" id="export-results-btn">
+                        <i class="fas fa-download btn-icon"></i>
+                        Exportar Relatório
+                    </button>
+                    <button class="btn btn-primary" id="share-doctor-btn">
+                        <i class="fas fa-share-alt btn-icon"></i>
+                        Compartilhar com Médico
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <!-- User Menu Modal -->
+    <div class="modal-overlay" id="user-menu-modal">
+        <div class="modal" style="max-width: 300px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Menu do Usuário</h3>
+                <div class="modal-close" id="user-menu-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <a href="perfil_paciente.html" class="user-menu-item">
+                    <i class="fas fa-user-circle"></i>
+                    Meu Perfil
+                </a>
+                <a href="configuracoes_paciente.html" class="user-menu-item">
+                    <i class="fas fa-cog"></i>
+                    Configurações
+                </a>
+                <a href="login.html" class="user-menu-item danger">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifications Modal -->
+    <div class="modal-overlay" id="notifications-modal">
+        <div class="modal notifications-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Notificações</h3>
+                <div class="modal-close" id="notifications-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="all">Todas</div>
+                        <div class="tab" data-tab="unread">Não lidas (3)</div>
+                    </div>
+                    
+                    <div class="notifications-list">
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon reminder">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Lembrete de Teste</div>
+                                <div class="notification-message">Não se esqueça de realizar seu teste da espiral hoje.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Solicitação de Médico</div>
+                                <div class="notification-message">Dr. Roberto Almeida solicitou vínculo com seu perfil.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 dia atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon appointment">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Lembrete de Consulta</div>
+                                <div class="notification-message">Sua consulta com Dr. Carlos Santos está marcada para amanhã às 14:30.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 dias atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon results">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Resultados Disponíveis</div>
+                                <div class="notification-message">Os resultados do seu teste de voz já estão disponíveis para visualização.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 semana atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-btn">
+                            <span>Ver todas notificações</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="mark-all-read-btn">
+                    <i class="fas fa-check-double btn-icon"></i>
+                    Marcar todas como lidas
+                </button>
+                <button class="btn btn-outline" id="notifications-close-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export Results Modal -->
+    <div class="modal-overlay" id="export-results-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Exportar Relatório de Resultados</h3>
+                <div class="modal-close" id="export-results-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="filter-label">Período para exportação:</label>
+                    <select class="filter-select" style="width: 100%;">
+                        <option value="last_30_days">Últimos 30 dias</option>
+                        <option value="last_3_months" selected>Últimos 3 meses</option>
+                        <option value="last_6_months">Últimos 6 meses</option>
+                        <option value="last_year">Último ano</option>
+                        <option value="all_time">Todo o período</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="filter-label">Testes a incluir:</label>
+                    <div style="margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <input type="checkbox" checked style="margin-right: 0.5rem;">
+                            Teste da Espiral
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <input type="checkbox" checked style="margin-right: 0.5rem;">
+                            Teste de Voz
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" checked style="margin-right: 0.5rem;">
+                            Análise Combinada
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="filter-label">Formato do relatório:</label>
+                    <select class="filter-select" style="width: 100%;">
+                        <option value="pdf" selected>PDF</option>
+                        <option value="csv">CSV (planilha)</option>
+                        <option value="json">JSON (dados brutos)</option>
+                    </select>
+                </div>
+                
+                <div style="margin-top: 1.5rem; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem;">
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">
+                        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                        O relatório exportado incluirá gráficos, dados numéricos e recomendações personalizadas baseadas nos seus resultados.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-export-results-btn">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-export-results-btn">Exportar Relatório</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Share with Doctor Modal -->
+    <div class="modal-overlay" id="share-doctor-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Compartilhar com Médico</h3>
+                <div class="modal-close" id="share-doctor-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="filter-label">Selecione o médico:</label>
+                    <select class="filter-select" style="width: 100%;">
+                        <option value="doctor_1">Dr. Carlos Santos - Neurologia</option>
+                        <option value="doctor_2">Dra. Mariana Costa - Neurologia</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="filter-label">Período de resultados:</label>
+                    <select class="filter-select" style="width: 100%;">
+                        <option value="last_30_days">Últimos 30 dias</option>
+                        <option value="last_3_months" selected>Últimos 3 meses</option>
+                        <option value="last_6_months">Últimos 6 meses</option>
+                        <option value="last_year">Último ano</option>
+                        <option value="all_time">Todo o período</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="filter-label">Adicionar mensagem (opcional):</label>
+                    <textarea class="filter-select" style="width: 100%; height: 100px; resize: vertical; padding: 0.75rem;" placeholder="Escreva uma mensagem para seu médico..."></textarea>
+                </div>
+                
+                <div style="margin-top: 1.5rem; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem;">
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">
+                        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                        O médico receberá uma notificação com acesso aos seus resultados selecionados e poderá fornecer feedback através da plataforma.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-share-doctor-btn">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-share-doctor-btn">Compartilhar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // User Menu Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userMenuModal = document.getElementById('user-menu-modal');
+            const userMenuModalClose = document.getElementById('user-menu-modal-close');
+            
+            userMenuToggle.addEventListener('click', function() {
+                userMenuModal.classList.add('open');
+            });
+            
+            function closeUserMenuModal() {
+                userMenuModal.classList.remove('open');
+            }
+            
+            userMenuModalClose.addEventListener('click', closeUserMenuModal);
+            userMenuModal.addEventListener('click', function(e) {
+                if (e.target === userMenuModal) {
+                    closeUserMenuModal();
+                }
+            });
+            
+            // Notifications Toggle
+            const notificationsToggle = document.getElementById('notifications-toggle');
+            const notificationsModal = document.getElementById('notifications-modal');
+            const notificationsModalClose = document.getElementById('notifications-modal-close');
+            const notificationsCloseBtn = document.getElementById('notifications-close-btn');
+            
+            notificationsToggle.addEventListener('click', function() {
+                notificationsModal.classList.add('open');
+            });
+            
+            function closeNotificationsModal() {
+                notificationsModal.classList.remove('open');
+            }
+            
+            notificationsModalClose.addEventListener('click', closeNotificationsModal);
+            notificationsCloseBtn.addEventListener('click', closeNotificationsModal);
+            notificationsModal.addEventListener('click', function(e) {
+                if (e.target === notificationsModal) {
+                    closeNotificationsModal();
+                }
+            });
+            
+            // Tabs
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
+            });
+            
+            // Mark all as read
+            const markAllReadBtn = document.getElementById('mark-all-read-btn');
+            
+            markAllReadBtn.addEventListener('click', function() {
+                const unreadItems = document.querySelectorAll('.notification-item.unread');
+                
+                unreadItems.forEach(item => {
+                    item.classList.remove('unread');
+                });
+                
+                // Update the notifications count
+                document.querySelector('.notifications-count').textContent = '0';
+                
+                // Update tab counts
+                document.querySelector('.tab[data-tab="unread"]').textContent = 'Não lidas (0)';
+            });
+            
+            // Time Range Buttons
+            const timeRangeBtns = document.querySelectorAll('.time-range-btn');
+            
+            timeRangeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    timeRangeBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+            
+            // Results Tabs
+            const resultsTabs = document.querySelectorAll('.results-tab');
+            const resultsTabContents = document.querySelectorAll('.results-tab-content');
+            
+            resultsTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    resultsTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    resultsTabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the content for the clicked tab
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Export Results Modal
+            const exportResultsBtn = document.getElementById('export-results-btn');
+            const exportResultsModal = document.getElementById('export-results-modal');
+            const exportResultsModalClose = document.getElementById('export-results-modal-close');
+            const cancelExportResultsBtn = document.getElementById('cancel-export-results-btn');
+            const confirmExportResultsBtn = document.getElementById('confirm-export-results-btn');
+            
+            exportResultsBtn.addEventListener('click', function() {
+                exportResultsModal.classList.add('open');
+            });
+            
+            function closeExportResultsModal() {
+                exportResultsModal.classList.remove('open');
+            }
+            
+            exportResultsModalClose.addEventListener('click', closeExportResultsModal);
+            cancelExportResultsBtn.addEventListener('click', closeExportResultsModal);
+            exportResultsModal.addEventListener('click', function(e) {
+                if (e.target === exportResultsModal) {
+                    closeExportResultsModal();
+                }
+            });
+            
+            confirmExportResultsBtn.addEventListener('click', function() {
+                // In a real implementation, this would export the results
+                // For this demo, we'll just close the modal and show a success message
+                alert('Relatório exportado com sucesso!');
+                closeExportResultsModal();
+            });
+            
+            // Share with Doctor Modal
+            const shareDoctorBtn = document.getElementById('share-doctor-btn');
+            const shareDoctorModal = document.getElementById('share-doctor-modal');
+            const shareDoctorModalClose = document.getElementById('share-doctor-modal-close');
+            const cancelShareDoctorBtn = document.getElementById('cancel-share-doctor-btn');
+            const confirmShareDoctorBtn = document.getElementById('confirm-share-doctor-btn');
+            
+            shareDoctorBtn.addEventListener('click', function() {
+                shareDoctorModal.classList.add('open');
+            });
+            
+            function closeShareDoctorModal() {
+                shareDoctorModal.classList.remove('open');
+            }
+            
+            shareDoctorModalClose.addEventListener('click', closeShareDoctorModal);
+            cancelShareDoctorBtn.addEventListener('click', closeShareDoctorModal);
+            shareDoctorModal.addEventListener('click', function(e) {
+                if (e.target === shareDoctorModal) {
+                    closeShareDoctorModal();
+                }
+            });
+            
+            confirmShareDoctorBtn.addEventListener('click', function() {
+                // In a real implementation, this would share the results with the doctor
+                // For this demo, we'll just close the modal and show a success message
+                alert('Resultados compartilhados com o médico com sucesso!');
+                closeShareDoctorModal();
+            });
+        });
+    </script>
+</body>
+</html>

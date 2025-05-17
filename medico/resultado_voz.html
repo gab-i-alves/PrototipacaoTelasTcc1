@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Resultados do Teste de Voz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../admin/styles_consolidated.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_medico.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pacientes_medico.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Pacientes</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Análises</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="testes_medico.html" class="nav-link active">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="comparacao_testes.html" class="nav-link">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Comparação de Testes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="vincular_paciente.html" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <span>Vincular Paciente</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/perfil_admin.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Resultado do Teste de Voz</h1>
+                <div class="header-actions">
+                    <a href="testes_medico.html" class="btn btn-outline">
+                        <i class="fas fa-arrow-left btn-icon"></i>
+                        Voltar
+                    </a>
+                    <a href="comparacao_testes.html?id=2" class="btn btn-primary">
+                        <i class="fas fa-chart-line btn-icon"></i>
+                        Comparar Testes
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Patient Info -->
+            <div class="patient-info">
+                <div class="patient-profile">
+                    <div class="patient-avatar">
+                        <div class="patient-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="patient-details">
+                        <h2 class="patient-name">Maria Oliveira</h2>
+                        <div class="patient-info-list">
+                            <div class="patient-info-item">
+                                <span class="info-label">Idade:</span>
+                                <span class="info-value">72 anos</span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Gênero:</span>
+                                <span class="info-value">Feminino</span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="status-badge stable">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Estável</span>
+                                </span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Total de testes:</span>
+                                <span class="info-value">8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Results Summary -->
+            <div class="test-results-grid">
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Pontuação Geral</div>
+                            <div class="result-card-value">88/100</div>
+                        </div>
+                        <div class="result-icon blue">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Comparado com a média da população de mesma idade (82/100)
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 10/05/2025 - 09:15
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Jitter</div>
+                            <div class="result-card-value">1.2%</div>
+                        </div>
+                        <div class="result-icon green">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Variação na frequência fundamental (normal: 0.5% - 1.5%)
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 10/05/2025 - 09:15
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Shimmer</div>
+                            <div class="result-card-value">3.5%</div>
+                        </div>
+                        <div class="result-icon green">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Variação na amplitude da onda sonora (normal: 3% - 5%)
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 10/05/2025 - 09:15
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">HNR</div>
+                            <div class="result-card-value">18.2 dB</div>
+                        </div>
+                        <div class="result-icon green">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Relação harmônico-ruído (normal: acima de 15 dB)
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 10/05/2025 - 09:15
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Voice Visualization -->
+            <div class="visualization-container">
+                <div class="section-header">
+                    <h2 class="section-title">Visualização do Teste</h2>
+                    <div class="tab-navigation">
+                        <button class="tab-btn active">Vogal Sustentada (/a/)</button>
+                        <button class="tab-btn">Diadococinético (/pa-ta-ka/)</button>
+                    </div>
+                </div>
+                
+                <div class="voice-visualization">
+                    <div class="voice-waveform">
+                        <div class="waveform-image">
+                            <img src="https://via.placeholder.com/800x200/FFFFFF?text=Waveform+Visualization" alt="Forma de onda do teste de voz">
+                        </div>
+                        <div class="waveform-controls">
+                            <button class="waveform-control">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button class="waveform-control play">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="waveform-control">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="spectrogram-container">
+                        <div class="spectrogram-header">
+                            <div class="spectrogram-title">Espectrograma</div>
+                            <div class="spectrogram-options">
+                                <button class="spectrogram-option active">Linear</button>
+                                <button class="spectrogram-option">Logarítmico</button>
+                                <button class="spectrogram-option">Mel</button>
+                            </div>
+                        </div>
+                        <div class="spectrogram-image">
+                            <img src="https://via.placeholder.com/800x200/FFFFFF?text=Spectrogram+Visualization" alt="Espectrograma do teste de voz">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="voice-analysis">
+                    <h3 class="analysis-header">Análise Detalhada</h3>
+                    <div class="analysis-metrics">
+                        <div class="metric-card">
+                            <div class="metric-title">Jitter Local</div>
+                            <div class="metric-value">1.2%</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-0.3%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Jitter Absoluto</div>
+                            <div class="metric-value">57μs</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-12μs</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Shimmer Local</div>
+                            <div class="metric-value">3.5%</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-0.7%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Shimmer dB</div>
+                            <div class="metric-value">0.32 dB</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-0.08 dB</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">HNR Médio</div>
+                            <div class="metric-value">18.2 dB</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+1.2 dB</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Frequência Fundamental</div>
+                            <div class="metric-value">192 Hz</div>
+                            <div class="metric-change stable">
+                                <i class="fas fa-equals"></i>
+                                <span>±2 Hz</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Duração da Amostra</div>
+                            <div class="metric-value">5.3s</div>
+                            <div class="metric-change stable">
+                                <i class="fas fa-equals"></i>
+                                <span>±0.2s</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Qualidade Vocal</div>
+                            <div class="metric-value">Excelente</div>
+                            <div class="metric-change improved">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>↑</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sample-comparison">
+                    <h3 class="analysis-header">Comparação com Amostras Anteriores</h3>
+                    <div class="table-responsive">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Jitter (%)</th>
+                                    <th>Shimmer (%)</th>
+                                    <th>HNR (dB)</th>
+                                    <th>Freq. Fund. (Hz)</th>
+                                    <th>Pontuação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlighted">
+                                    <td>10/05/2025</td>
+                                    <td class="value-improved">1.2</td>
+                                    <td class="value-improved">3.5</td>
+                                    <td class="value-improved">18.2</td>
+                                    <td class="value-stable">192</td>
+                                    <td class="value-improved">88/100</td>
+                                </tr>
+                                <tr>
+                                    <td>28/04/2025</td>
+                                    <td>1.5</td>
+                                    <td>4.2</td>
+                                    <td>17.0</td>
+                                    <td>190</td>
+                                    <td>85/100</td>
+                                </tr>
+                                <tr>
+                                    <td>14/04/2025</td>
+                                    <td>1.8</td>
+                                    <td>4.7</td>
+                                    <td>16.3</td>
+                                    <td>188</td>
+                                    <td>82/100</td>
+                                </tr>
+                                <tr>
+                                    <td>01/04/2025</td>
+                                    <td>2.1</td>
+                                    <td>5.3</td>
+                                    <td>15.5</td>
+                                    <td>186</td>
+                                    <td>78/100</td>
+                                </tr>
+                                <tr>
+                                    <td>15/03/2025</td>
+                                    <td>2.3</td>
+                                    <td>5.8</td>
+                                    <td>14.8</td>
+                                    <td>184</td>
+                                    <td>75/100</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Historical Comparison -->
+            <div class="visualization-container">
+                <div class="section-header">
+                    <h2 class="section-title">Evolução Histórica</h2>
+                </div>
+                
+                <div class="historical-chart">
+                    [Gráfico de Evolução Histórica dos Parâmetros Vocais]
+                </div>
+                
+                <div class="chart-controls">
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color jitter"></div>
+                            <span>Jitter (%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color shimmer"></div>
+                            <span>Shimmer (%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color hnr"></div>
+                            <span>HNR (dB)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-filter">
+                        <div class="filter-option active">3 meses</div>
+                        <div class="filter-option">6 meses</div>
+                        <div class="filter-option">1 ano</div>
+                        <div class="filter-option">Todos</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Medical Notes -->
+            <div class="notes-container">
+                <div class="notes-header">
+                    <h2 class="section-title">Anotações Médicas</h2>
+                </div>
+                
+                <div class="notes-list">
+                    <div class="note-item">
+                        <div class="note-header">
+                            <div class="note-author">Dr. Carlos Santos</div>
+                            <div class="note-date">10/05/2025 - 11:30</div>
+                        </div>
+                        <div class="note-content">
+                            Verifico melhora significativa nos parâmetros vocais da paciente, especialmente na redução do jitter e shimmer. A relação harmônico-ruído também apresentou aumento, o que indica melhor qualidade vocal. A paciente relata que tem feito os exercícios fonoaudiológicos regularmente, o que pode estar contribuindo para essa melhora.
+                        </div>
+                    </div>
+                    
+                    <div class="note-item">
+                        <div class="note-header">
+                            <div class="note-author">Dr. Carlos Santos</div>
+                            <div class="note-date">28/04/2025 - 14:45</div>
+                        </div>
+                        <div class="note-content">
+                            Na comparação com os testes anteriores, observa-se uma tendência de melhora gradual nos parâmetros vocais. A medicação atual parece estar contribuindo para essa estabilização. Recomendado manter os exercícios de fonoterapia e o acompanhamento regular.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note-form">
+                    <textarea class="note-textarea" placeholder="Adicionar nova anotação..."></textarea>
+                    <div class="note-form-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save btn-icon"></i>
+                            Salvar Anotação
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions Bar -->
+            <div class="actions-bar">
+                <div class="export-btn">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download btn-icon"></i>
+                        Exportar Relatório PDF
+                    </button>
+                </div>
+                
+                <div class="patient-actions">
+                    <a href="paciente_detalhes.html?id=2" class="btn btn-outline">
+                        <i class="fas fa-user btn-icon"></i>
+                        Ver Perfil Completo
+                    </a>
+                    <a href="mensagem_paciente.html?id=2" class="btn btn-primary">
+                        <i class="fas fa-comment-alt btn-icon"></i>
+                        Enviar Mensagem
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Tab Navigation
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Chart Filter
+            const filterOptions = document.querySelectorAll('.filter-option');
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    filterOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Spectrogram Options
+            const spectrogramOptions = document.querySelectorAll('.spectrogram-option');
+            spectrogramOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    spectrogramOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Play Button
+            const playButton = document.querySelector('.waveform-control.play');
+            playButton.addEventListener('click', function() {
+                const isPlaying = this.querySelector('i').classList.contains('fa-pause');
+                
+                if (isPlaying) {
+                    // Pause audio
+                    this.querySelector('i').classList.remove('fa-pause');
+                    this.querySelector('i').classList.add('fa-play');
+                    console.log('Audio paused');
+                } else {
+                    // Play audio
+                    this.querySelector('i').classList.remove('fa-play');
+                    this.querySelector('i').classList.add('fa-pause');
+                    console.log('Audio playing');
+                    
+                    // Auto reset after 3 seconds (simulating audio playback end)
+                    setTimeout(() => {
+                        this.querySelector('i').classList.remove('fa-pause');
+                        this.querySelector('i').classList.add('fa-play');
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

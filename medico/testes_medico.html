@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Testes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+    <style>
+        /* Estilos específicos para testes */
+        .filter-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-input,
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tests-list {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .list-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .test-table th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .test-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .test-table tr:hover td {
+            background-color: #f9fafb;
+        }
+
+        .patient-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .patient-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .test-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .test-type-badge.spiral {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+
+        .test-type-badge.voice {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .test-type-badge i {
+            margin-right: 0.375rem;
+        }
+
+        .test-score {
+            font-weight: 500;
+        }
+
+        .test-score.high {
+            color: #059669;
+        }
+
+        .test-score.medium {
+            color: #d97706;
+        }
+
+        .test-score.low {
+            color: #ef4444;
+        }
+
+        .test-date {
+            color: #6b7280;
+        }
+
+        .test-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.view {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+
+        .action-btn.view:hover {
+            background-color: #ddd6fe;
+        }
+
+        .action-btn.compare {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .action-btn.compare:hover {
+            background-color: #bfdbfe;
+        }
+
+        .action-btn.note {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .action-btn.note:hover {
+            background-color: #a7f3d0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            border-color: #9ca3af;
+        }
+
+        .pagination-btn.active {
+            background-color: #7e22ce;
+            border-color: #7e22ce;
+            color: white;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 991px) {
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .tests-list {
+                overflow-x: auto;
+            }
+
+            .test-table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_medico.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pacientes_medico.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Pacientes</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Análises</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="testes_medico.html" class="nav-link active">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="comparacao_testes.html" class="nav-link">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Comparação de Testes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="vincular_paciente.html" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <span>Vincular Paciente</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/perfil_admin.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Testes Realizados</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">5</div>
+                    </div>
+                    <a href="login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Filtro de Testes -->
+            <div class="filter-container">
+                <div class="filter-header">
+                    <h2 class="filter-title">Filtros</h2>
+                </div>
+                
+                <form class="filter-form">
+                    <div class="filter-group">
+                        <label class="filter-label">Tipo de Teste</label>
+                        <select class="filter-select">
+                            <option value="all">Todos os tipos</option>
+                            <option value="spiral">Teste da Espiral</option>
+                            <option value="voice">Teste de Voz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Paciente</label>
+                        <select class="filter-select">
+                            <option value="all">Todos os pacientes</option>
+                            <option value="1">João Silva</option>
+                            <option value="2">Maria Oliveira</option>
+                            <option value="3">Pedro Santos</option>
+                            <option value="4">Ana Ferreira</option>
+                            <option value="5">Carlos Mendes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select">
+                            <option value="all">Todos os status</option>
+                            <option value="stable">Estável</option>
+                            <option value="attention">Requer Atenção</option>
+                            <option value="critical">Crítico</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Data Inicial</label>
+                        <input type="date" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Data Final</label>
+                        <input type="date" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Pontuação Mínima</label>
+                        <input type="number" class="filter-input" min="0" max="100" placeholder="0-100">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-undo btn-icon"></i>
+                            Limpar Filtros
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter btn-icon"></i>
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Lista de Testes -->
+            <div class="tests-list">
+                <div class="list-header">
+                    <h2 class="list-title">Testes Recentes</h2>
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Buscar teste...">
+                        <button class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Tipo de Teste</th>
+                                <th>Pontuação</th>
+                                <th>Data e Hora</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">João Silva</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge spiral">
+                                        <i class="fas fa-circle-notch"></i>
+                                        <span>Espiral</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score medium">68/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">12/05/2025 - 14:30</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge attention">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span>Requer atenção</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_espiral.html?id=1&test=123" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=1&test=123" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">Maria Oliveira</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge voice">
+                                        <i class="fas fa-microphone"></i>
+                                        <span>Voz</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score high">88/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">10/05/2025 - 09:15</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge stable">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Estável</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_voz.html?id=2&test=124" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=2&test=124" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">Pedro Santos</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge spiral">
+                                        <i class="fas fa-circle-notch"></i>
+                                        <span>Espiral</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score low">42/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">14/05/2025 - 11:30</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge critical">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Crítico</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_espiral.html?id=3&test=125" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=3&test=125" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">Ana Ferreira</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge voice">
+                                        <i class="fas fa-microphone"></i>
+                                        <span>Voz</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score high">80/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">11/05/2025 - 16:45</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge stable">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Estável</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_voz.html?id=4&test=126" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=4&test=126" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">Carlos Mendes</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge spiral">
+                                        <i class="fas fa-circle-notch"></i>
+                                        <span>Espiral</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score high">79/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">09/05/2025 - 10:20</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge stable">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Estável</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_espiral.html?id=5&test=127" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=5&test=127" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">Maria Oliveira</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge spiral">
+                                        <i class="fas fa-circle-notch"></i>
+                                        <span>Espiral</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score high">84/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">08/05/2025 - 14:10</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge stable">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Estável</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_espiral.html?id=2&test=128" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=2&test=128" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="patient-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="patient-name">João Silva</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-type-badge voice">
+                                        <i class="fas fa-microphone"></i>
+                                        <span>Voz</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="test-score medium">72/100</span>
+                                </td>
+                                <td>
+                                    <span class="test-date">07/05/2025 - 09:45</span>
+                                </td>
+                                <td>
+                                    <div class="status-badge attention">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span>Requer atenção</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="test-actions">
+                                        <a href="resultado_voz.html?id=1&test=129" class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="comparacao_testes.html?id=1&test=129" class="action-btn compare">
+                                            <i class="fas fa-chart-line"></i>
+                                        </a>
+                                        <a href="#" class="action-btn note">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Mostrando 1-7 de 42 testes
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Data atual para filtros
+            const today = new Date();
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(today.getMonth() - 3);
+            
+            document.querySelectorAll('input[type="date"]')[1].valueAsDate = today;
+            document.querySelectorAll('input[type="date"]')[0].valueAsDate = threeMonthsAgo;
+            
+            // Simulação da busca
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    alert('Buscando por: ' + this.value);
+                }
+            });
+            
+            // Paginação
+            document.querySelectorAll('.pagination-btn').forEach(btn => {
+                if (!btn.classList.contains('disabled')) {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.pagination-btn').forEach(b => {
+                            if (b.textContent.trim().match(/[0-9]/)) {
+                                b.classList.remove('active');
+                            }
+                        });
+                        
+                        if (this.textContent.trim().match(/[0-9]/)) {
+                            this.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

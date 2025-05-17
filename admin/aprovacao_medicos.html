@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Aprovação de Médicos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard_admin.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Administração</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_admin.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="gerenciamento_usuarios.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Gerenciar Usuários</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="gerenciamento_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Gerenciar Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="aprovacao_medicos.html" class="nav-link active">
+                                <i class="fas fa-clipboard-check nav-icon"></i>
+                                <span>Aprovar Médicos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Admin Sistema</div>
+                        <div class="user-status">Administrador</div>
+                    </div>
+                    <div class="user-menu" id="user-menu-toggle">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Aprovação de Médicos</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon" id="notifications-toggle">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">5</div>
+                    </div>
+                    <a href="../common/login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Pending Approvals List -->
+            <div class="pending-list">
+                <h2 class="section-title">Solicitações Pendentes (5)</h2>
+                
+                <div class="pending-item active-item">
+                    <div class="pending-avatar">
+                        <div class="pending-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="pending-info">
+                        <div class="pending-name">Dra. Júlia Mendes</div>
+                        <div class="pending-details">
+                            <div class="pending-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>98765-RS</span>
+                            </div>
+                            <div class="pending-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Neurologia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pending-date">
+                        <div>Enviado em</div>
+                        <div><strong>12/05/2025</strong></div>
+                    </div>
+                    <div class="pending-actions">
+                        <button class="btn btn-success" id="open-approval-btn">
+                            <i class="fas fa-check btn-icon"></i>
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pending-item">
+                    <div class="pending-avatar">
+                        <div class="pending-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="pending-info">
+                        <div class="pending-name">Dr. Ricardo Martins</div>
+                        <div class="pending-details">
+                            <div class="pending-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>56789-SP</span>
+                            </div>
+                            <div class="pending-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Geriatria</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pending-date">
+                        <div>Enviado em</div>
+                        <div><strong>10/05/2025</strong></div>
+                    </div>
+                    <div class="pending-actions">
+                        <button class="btn btn-success" id="open-approval-btn-2">
+                            <i class="fas fa-check btn-icon"></i>
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pending-item">
+                    <div class="pending-avatar">
+                        <div class="pending-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="pending-info">
+                        <div class="pending-name">Dra. Patrícia Souza</div>
+                        <div class="pending-details">
+                            <div class="pending-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>45678-RJ</span>
+                            </div>
+                            <div class="pending-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Neurologia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pending-date">
+                        <div>Enviado em</div>
+                        <div><strong>08/05/2025</strong></div>
+                    </div>
+                    <div class="pending-actions">
+                        <button class="btn btn-success" id="open-approval-btn-3">
+                            <i class="fas fa-check btn-icon"></i>
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pending-item">
+                    <div class="pending-avatar">
+                        <div class="pending-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="pending-info">
+                        <div class="pending-name">Dr. Fernando Costa</div>
+                        <div class="pending-details">
+                            <div class="pending-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>34567-PR</span>
+                            </div>
+                            <div class="pending-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Clinica Médica</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pending-date">
+                        <div>Enviado em</div>
+                        <div><strong>05/05/2025</strong></div>
+                    </div>
+                    <div class="pending-actions">
+                        <button class="btn btn-success" id="open-approval-btn-4">
+                            <i class="fas fa-check btn-icon"></i>
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pending-item">
+                    <div class="pending-avatar">
+                        <div class="pending-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="pending-info">
+                        <div class="pending-name">Dr. Gustavo Santos</div>
+                        <div class="pending-details">
+                            <div class="pending-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>23456-MG</span>
+                            </div>
+                            <div class="pending-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Psiquiatria</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pending-date">
+                        <div>Enviado em</div>
+                        <div><strong>02/05/2025</strong></div>
+                    </div>
+                    <div class="pending-actions">
+                        <button class="btn btn-success" id="open-approval-btn-5">
+                            <i class="fas fa-check btn-icon"></i>
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doctor Approval Details -->
+            <div class="approval-section" id="approval-detail">
+                <div class="approval-header">
+                    <div class="approval-badge">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="approval-info">
+                        <h2 class="approval-title">Solicitação de Cadastro de Médico</h2>
+                        <div class="approval-subtitle">
+                            <span class="approval-badge-status pending">
+                                <i class="fas fa-clock"></i>
+                                Pendente
+                            </span>
+                            <span>Enviado em 12/05/2025</span>
+                        </div>
+                    </div>
+                    <div class="approval-actions">
+                        <button class="btn btn-outline" id="back-to-list-btn">
+                            <i class="fas fa-arrow-left btn-icon"></i>
+                            Voltar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="doctor-info">
+                    <h3 class="section-title">Informações do Médico</h3>
+                    <div class="info-grid">
+                        <div>
+                            <div class="info-group">
+                                <div class="info-label">Nome Completo</div>
+                                <div class="info-value">Dra. Júlia Mendes</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">CPF</div>
+                                <div class="info-value">345.678.901-23</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Data de Nascimento</div>
+                                <div class="info-value">15/08/1988</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Email</div>
+                                <div class="info-value">julia.mendes@email.com</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Telefone</div>
+                                <div class="info-value">(51) 98765-4321</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-group">
+                                <div class="info-label">CRM</div>
+                                <div class="info-value">98765-RS</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Especialidade</div>
+                                <div class="info-value">Neurologia</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Local de Atendimento</div>
+                                <div class="info-value">Hospital Santa Casa e Clínica Neurovida</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Experiência com Parkinson</div>
+                                <div class="info-value">3 a 5 anos</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Endereço</div>
+                                <div class="info-value">Av. Ipiranga, 1450 - Porto Alegre/RS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="documents-section">
+                    <h3 class="section-title">Documentação</h3>
+                    <div class="document-grid">
+                        <div class="document-card">
+                            <div class="document-header">
+                                <div class="document-type">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>Carteira do CRM</span>
+                                </div>
+                            </div>
+                            <div class="document-preview">
+                                <div class="document-placeholder">
+                                    [Prévia do documento carteira CRM]
+                                </div>
+                            </div>
+                            <div class="document-actions">
+                                <button class="document-btn" title="Ampliar" id="doc-expand-1">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button class="document-btn" title="Baixar" id="doc-download-1">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="document-card">
+                            <div class="document-header">
+                                <div class="document-type">
+                                    <i class="fas fa-address-card"></i>
+                                    <span>Documento de Identificação</span>
+                                </div>
+                            </div>
+                            <div class="document-preview">
+                                <div class="document-placeholder">
+                                    [Prévia do documento de identificação]
+                                </div>
+                            </div>
+                            <div class="document-actions">
+                                <button class="document-btn" title="Ampliar" id="doc-expand-2">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button class="document-btn" title="Baixar" id="doc-download-2">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="document-card">
+                            <div class="document-header">
+                                <div class="document-type">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Diploma de Medicina</span>
+                                </div>
+                            </div>
+                            <div class="document-preview">
+                                <div class="document-placeholder">
+                                    [Prévia do diploma de medicina]
+                                </div>
+                            </div>
+                            <div class="document-actions">
+                                <button class="document-btn" title="Ampliar" id="doc-expand-3">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button class="document-btn" title="Baixar" id="doc-download-3">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="decision-section">
+                    <h3 class="section-title">Decisão</h3>
+                    <p>Após analisar os documentos e informações do médico, você pode aprovar ou rejeitar a solicitação de cadastro.</p>
+                    
+                    <div class="form-group">
+                        <label for="decision-comment" class="form-label">Observações (opcional para aprovação, obrigatório para rejeição)</label>
+                        <textarea id="decision-comment" class="form-input" rows="4" placeholder="Adicione aqui suas observações ou o motivo da rejeição..."></textarea>
+                    </div>
+                    
+                    <div class="decision-btns">
+                        <button class="btn btn-outline" id="open-reject-modal">
+                            <i class="fas fa-times btn-icon"></i>
+                            Rejeitar
+                        </button>
+                        <button class="btn btn-success" id="open-approve-modal">
+                            <i class="fas fa-check btn-icon"></i>
+                            Aprovar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <!-- User Menu Modal -->
+    <div class="modal-overlay" id="user-menu-modal">
+        <div class="modal" style="max-width: 300px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Menu do Administrador</h3>
+                <div class="modal-close" id="user-menu-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <a href="perfil_admin.html" class="user-menu-item">
+                    <i class="fas fa-user-circle"></i>
+                    Meu Perfil
+                </a>
+                <a href="../common/login.html" class="user-menu-item danger">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifications Modal -->
+    <div class="modal-overlay" id="notifications-modal">
+        <div class="modal notifications-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Notificações</h3>
+                <div class="modal-close" id="notifications-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="all">Todas</div>
+                        <div class="tab" data-tab="unread">Não lidas (5)</div>
+                    </div>
+                    
+                    <div class="notifications-list">
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Ricardo Martins enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dra. Patrícia Souza enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>3 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon user">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Novo usuário cadastrado</div>
+                                <div class="notification-message">João Silva completou seu cadastro como usuário no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Fernando Costa enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>12 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Gustavo Santos enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>20 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon approval">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico aprovado</div>
+                                <div class="notification-message">Dr. Carlos Santos foi aprovado no sistema. Email de confirmação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 dia atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon reject">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico suspenso</div>
+                                <div class="notification-message">Dr. Marcos Oliveira foi suspenso do sistema. Email de notificação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 dias atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-btn">
+                            <span>Ver todas notificações</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="mark-all-read-btn">
+                    <i class="fas fa-check-double btn-icon"></i>
+                    Marcar todas como lidas
+                </button>
+                <button class="btn btn-outline" id="notifications-close-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Approve Confirmation Modal -->
+    <div class="modal-overlay" id="approve-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Aprovação</h3>
+                <div class="modal-close" id="approve-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja aprovar o cadastro da <strong>Dra. Júlia Mendes</strong>?</p>
+                <p>Ao aprovar, o médico receberá um e-mail de confirmação e poderá acessar o sistema.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="approve-cancel-btn">Cancelar</button>
+                <button class="btn btn-success" id="approve-confirm-btn">Confirmar Aprovação</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reject Confirmation Modal -->
+    <div class="modal-overlay" id="reject-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Rejeição</h3>
+                <div class="modal-close" id="reject-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja rejeitar o cadastro da <strong>Dra. Júlia Mendes</strong>?</p>
+                <p>Ao rejeitar, o médico receberá um e-mail com o motivo da rejeição.</p>
+                
+                <div class="form-group">
+                    <label for="reject-reason" class="form-label">Motivo da Rejeição*</label>
+                    <textarea id="reject-reason" class="form-input" rows="4" placeholder="Descreva o motivo da rejeição..." required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="reject-cancel-btn">Cancelar</button>
+                <button class="btn btn-danger" id="reject-confirm-btn">Confirmar Rejeição</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Document Preview Modal -->
+    <div class="modal-overlay" id="document-preview-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Visualização do Documento</h3>
+                <div class="modal-close" id="document-preview-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div style="height: 400px; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center;">
+                    <div style="color: #6b7280; font-size: 1rem;">
+                        [Visualização ampliada do documento]
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="document-preview-download">
+                    <i class="fas fa-download btn-icon"></i>
+                    Baixar
+                </button>
+                <button class="btn btn-outline" id="document-preview-close-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esconder detalhes de aprovação inicialmente
+            const approvalDetail = document.getElementById('approval-detail');
+            approvalDetail.style.display = 'none';
+            
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // User Menu Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userMenuModal = document.getElementById('user-menu-modal');
+            const userMenuModalClose = document.getElementById('user-menu-modal-close');
+            
+            userMenuToggle.addEventListener('click', function() {
+                userMenuModal.classList.add('open');
+            });
+            
+            function closeUserMenuModal() {
+                userMenuModal.classList.remove('open');
+            }
+            
+            userMenuModalClose.addEventListener('click', closeUserMenuModal);
+            userMenuModal.addEventListener('click', function(e) {
+                if (e.target === userMenuModal) {
+                    closeUserMenuModal();
+                }
+            });
+            
+            // Notifications Toggle
+            const notificationsToggle = document.getElementById('notifications-toggle');
+            const notificationsModal = document.getElementById('notifications-modal');
+            const notificationsModalClose = document.getElementById('notifications-modal-close');
+            const notificationsCloseBtn = document.getElementById('notifications-close-btn');
+            
+            notificationsToggle.addEventListener('click', function() {
+                notificationsModal.classList.add('open');
+            });
+            
+            function closeNotificationsModal() {
+                notificationsModal.classList.remove('open');
+            }
+            
+            notificationsModalClose.addEventListener('click', closeNotificationsModal);
+            notificationsCloseBtn.addEventListener('click', closeNotificationsModal);
+            notificationsModal.addEventListener('click', function(e) {
+                if (e.target === notificationsModal) {
+                    closeNotificationsModal();
+                }
+            });
+            
+            // Open Approval Detail
+            const openApprovalBtn = document.getElementById('open-approval-btn');
+            const openApprovalBtn2 = document.getElementById('open-approval-btn-2');
+            const openApprovalBtn3 = document.getElementById('open-approval-btn-3');
+            const openApprovalBtn4 = document.getElementById('open-approval-btn-4');
+            const openApprovalBtn5 = document.getElementById('open-approval-btn-5');
+            
+            function openApprovalDetail() {
+                document.querySelector('.pending-list').style.display = 'none';
+                approvalDetail.style.display = 'block';
+            }
+            
+            openApprovalBtn.addEventListener('click', openApprovalDetail);
+            openApprovalBtn2.addEventListener('click', openApprovalDetail);
+            openApprovalBtn3.addEventListener('click', openApprovalDetail);
+            openApprovalBtn4.addEventListener('click', openApprovalDetail);
+            openApprovalBtn5.addEventListener('click', openApprovalDetail);
+            
+            // Back to List
+            const backToListBtn = document.getElementById('back-to-list-btn');
+            
+            backToListBtn.addEventListener('click', function() {
+                approvalDetail.style.display = 'none';
+                document.querySelector('.pending-list').style.display = 'block';
+            });
+            
+            // Approve Modal
+            const openApproveModalBtn = document.getElementById('open-approve-modal');
+            const approveModal = document.getElementById('approve-modal');
+            const approveModalClose = document.getElementById('approve-modal-close');
+            const approveCancelBtn = document.getElementById('approve-cancel-btn');
+            const approveConfirmBtn = document.getElementById('approve-confirm-btn');
+            
+            openApproveModalBtn.addEventListener('click', function() {
+                approveModal.classList.add('open');
+            });
+            
+            function closeApproveModal() {
+                approveModal.classList.remove('open');
+            }
+            
+            approveModalClose.addEventListener('click', closeApproveModal);
+            approveCancelBtn.addEventListener('click', closeApproveModal);
+            
+            approveConfirmBtn.addEventListener('click', function() {
+                // Na prática, aqui seria feita uma chamada AJAX para aprovar o médico
+                // Esta é apenas uma simulação para demonstração
+                alert('Médico aprovado com sucesso!');
+                closeApproveModal();
+                approvalDetail.style.display = 'none';
+                
+                // Remover o item aprovado da lista
+                const activeItem = document.querySelector('.active-item');
+                if (activeItem) {
+                    activeItem.remove();
+                }
+                
+                document.querySelector('.pending-list').style.display = 'block';
+                
+                // Atualizar título da seção
+                const title = document.querySelector('.section-title');
+                title.textContent = 'Solicitações Pendentes (4)';
+            });
+            
+            // Reject Modal
+            const openRejectModalBtn = document.getElementById('open-reject-modal');
+            const rejectModal = document.getElementById('reject-modal');
+            const rejectModalClose = document.getElementById('reject-modal-close');
+            const rejectCancelBtn = document.getElementById('reject-cancel-btn');
+            const rejectConfirmBtn = document.getElementById('reject-confirm-btn');
+            
+            openRejectModalBtn.addEventListener('click', function() {
+                // Copiar o texto do textarea de observações para o textarea de motivo de rejeição
+                const decisionComment = document.getElementById('decision-comment').value;
+                document.getElementById('reject-reason').value = decisionComment;
+                
+                rejectModal.classList.add('open');
+            });
+            
+            function closeRejectModal() {
+                rejectModal.classList.remove('open');
+            }
+            
+            rejectModalClose.addEventListener('click', closeRejectModal);
+            rejectCancelBtn.addEventListener('click', closeRejectModal);
+            
+            rejectConfirmBtn.addEventListener('click', function() {
+                const rejectReason = document.getElementById('reject-reason').value.trim();
+                
+                if (!rejectReason) {
+                    alert('Por favor, informe o motivo da rejeição.');
+                    return;
+                }
+                
+                // Na prática, aqui seria feita uma chamada AJAX para rejeitar o médico
+                // Esta é apenas uma simulação para demonstração
+                alert('Médico rejeitado com sucesso!');
+                closeRejectModal();
+                approvalDetail.style.display = 'none';
+                
+                // Remover o item rejeitado da lista
+                const activeItem = document.querySelector('.active-item');
+                if (activeItem) {
+                    activeItem.remove();
+                }
+                
+                document.querySelector('.pending-list').style.display = 'block';
+                
+                // Atualizar título da seção
+                const title = document.querySelector('.section-title');
+                title.textContent = 'Solicitações Pendentes (4)';
+            });
+            
+            // Document Preview Modal
+            const docExpandBtns = document.querySelectorAll('[id^="doc-expand-"]');
+            const documentPreviewModal = document.getElementById('document-preview-modal');
+            const documentPreviewClose = document.getElementById('document-preview-close');
+            const documentPreviewCloseBtn = document.getElementById('document-preview-close-btn');
+            
+            docExpandBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    documentPreviewModal.classList.add('open');
+                });
+            });
+            
+            function closeDocumentPreviewModal() {
+                documentPreviewModal.classList.remove('open');
+            }
+            
+            documentPreviewClose.addEventListener('click', closeDocumentPreviewModal);
+            documentPreviewCloseBtn.addEventListener('click', closeDocumentPreviewModal);
+            
+            // Document Download
+            const docDownloadBtns = document.querySelectorAll('[id^="doc-download-"]');
+            
+            docDownloadBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Download iniciado!');
+                });
+            });
+            
+            // Mark all as read
+            const markAllReadBtn = document.getElementById('mark-all-read-btn');
+            
+            markAllReadBtn.addEventListener('click', function() {
+                const unreadItems = document.querySelectorAll('.notification-item.unread');
+                
+                unreadItems.forEach(item => {
+                    item.classList.remove('unread');
+                });
+                
+                // Update the notifications count
+                document.querySelector('.notifications-count').textContent = '0';
+                
+                // Update tab counts
+                document.querySelector('.tab[data-tab="unread"]').textContent = 'Não lidas (0)';
+            });
+            
+            // Tabs
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

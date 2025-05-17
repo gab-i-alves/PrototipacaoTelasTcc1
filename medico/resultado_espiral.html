@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Resultados do Teste da Espiral</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles_consolidated.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_medico.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pacientes_medico.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Pacientes</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Análises</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="testes_medico.html" class="nav-link active">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="comparacao_testes.html" class="nav-link">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Comparação de Testes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="vincular_paciente.html" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <span>Vincular Paciente</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/perfil_admin.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Resultado do Teste da Espiral</h1>
+                <div class="header-actions">
+                    <a href="pacientes_medico.html" class="btn btn-outline">
+                        <i class="fas fa-arrow-left btn-icon"></i>
+                        Voltar
+                    </a>
+                    <a href="comparacao_testes.html?id=1" class="btn btn-primary">
+                        <i class="fas fa-chart-line btn-icon"></i>
+                        Comparar Testes
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Patient Info -->
+            <div class="patient-info">
+                <div class="patient-profile">
+                    <div class="patient-avatar">
+                        <div class="patient-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="patient-details">
+                        <h2 class="patient-name">João Silva</h2>
+                        <div class="patient-info-list">
+                            <div class="patient-info-item">
+                                <span class="info-label">Idade:</span>
+                                <span class="info-value">67 anos</span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Gênero:</span>
+                                <span class="info-value">Masculino</span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="status-badge attention">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Requer atenção</span>
+                                </span>
+                            </div>
+                            <div class="patient-info-item">
+                                <span class="info-label">Total de testes:</span>
+                                <span class="info-value">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Results Summary -->
+            <div class="test-results-grid">
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Pontuação Geral</div>
+                            <div class="result-card-value">68/100</div>
+                        </div>
+                        <div class="result-icon yellow">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Comparado com a média da população de mesma idade (82/100)
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 12/05/2025 - 14:30
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Tremor</div>
+                            <div class="result-card-value">3.2mm</div>
+                        </div>
+                        <div class="result-icon red">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Amplitude média do tremor durante o traçado da espiral
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 12/05/2025 - 14:30
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Precisão</div>
+                            <div class="result-card-value">74%</div>
+                        </div>
+                        <div class="result-icon yellow">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Proximidade do traçado em relação ao modelo de referência
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 12/05/2025 - 14:30
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div>
+                            <div class="result-card-title">Tempo de Execução</div>
+                            <div class="result-card-value">58s</div>
+                        </div>
+                        <div class="result-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-description">
+                        Tempo total para completar o traçado da espiral
+                    </div>
+                    <div class="result-date">
+                        <i class="far fa-calendar-alt"></i> 12/05/2025 - 14:30
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Visualization -->
+            <div class="visualization-container">
+                <div class="section-header">
+                    <h2 class="section-title">Visualização do Teste</h2>
+                    <div class="tab-navigation">
+                        <button class="tab-btn active">Último Teste (12/05/2025)</button>
+                        <button class="tab-btn">Comparação com Teste Anterior</button>
+                    </div>
+                </div>
+                
+                <div class="spiral-visualization">
+                    <div class="spiral-col">
+                        <h3 class="spiral-col-title">Traçado do Paciente</h3>
+                        <div class="spiral-image">
+                            <img src="https://via.placeholder.com/400x300/FFFFFF?text=Traçado+do+Paciente" alt="Traçado do paciente">
+                        </div>
+                    </div>
+                    <div class="spiral-col">
+                        <h3 class="spiral-col-title">Modelo de Referência</h3>
+                        <div class="spiral-image">
+                            <img src="https://via.placeholder.com/400x300/FFFFFF?text=Modelo+de+Referência" alt="Modelo de referência">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="spiral-analysis">
+                    <h3 class="analysis-header">Análise Detalhada</h3>
+                    <div class="analysis-metrics">
+                        <div class="metric-card">
+                            <div class="metric-title">Amplitude do Tremor</div>
+                            <div class="metric-value">3.2mm (↑ 0.8mm)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Frequência do Tremor</div>
+                            <div class="metric-value">4.7Hz</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Precisão do Traçado</div>
+                            <div class="metric-value">74% (↓ 6%)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Estabilidade do Traçado</div>
+                            <div class="metric-value">68% (↓ 8%)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Velocidade Média</div>
+                            <div class="metric-value">2.3 cm/s</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Interrupções no Traçado</div>
+                            <div class="metric-value">3 (↑ 1)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Pressão Aplicada</div>
+                            <div class="metric-value">Moderada</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Tempo Total de Execução</div>
+                            <div class="metric-value">58 segundos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Historical Comparison -->
+            <div class="visualization-container">
+                <div class="section-header">
+                    <h2 class="section-title">Evolução Histórica</h2>
+                </div>
+                
+                <div class="historical-chart">
+                    [Gráfico de Evolução Histórica dos Parâmetros do Teste]
+                </div>
+                
+                <div class="chart-controls">
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color tremor"></div>
+                            <span>Tremor</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color precision"></div>
+                            <span>Precisão</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color speed"></div>
+                            <span>Velocidade</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-filter">
+                        <div class="filter-option active">3 meses</div>
+                        <div class="filter-option">6 meses</div>
+                        <div class="filter-option">1 ano</div>
+                        <div class="filter-option">Todos</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Medical Notes -->
+            <div class="notes-container">
+                <div class="notes-header">
+                    <h2 class="section-title">Anotações Médicas</h2>
+                </div>
+                
+                <div class="notes-list">
+                    <div class="note-item">
+                        <div class="note-header">
+                            <div class="note-author">Dr. Carlos Santos</div>
+                            <div class="note-date">12/05/2025 - 15:30</div>
+                        </div>
+                        <div class="note-content">
+                            Observa-se aumento na amplitude do tremor em comparação com o teste anterior. O paciente relatou ter dormido mal na noite anterior ao teste, o que pode ter influenciado no resultado. Recomendo repetir o teste em 7 dias e avaliar se há persistência deste padrão. Caso positivo, considerar ajuste na medicação.
+                        </div>
+                    </div>
+                    
+                    <div class="note-item">
+                        <div class="note-header">
+                            <div class="note-author">Dr. Carlos Santos</div>
+                            <div class="note-date">05/05/2025 - 14:45</div>
+                        </div>
+                        <div class="note-content">
+                            Teste da espiral anterior mostrou estabilidade nos parâmetros após o ajuste na dosagem do medicamento. Paciente relatou melhora subjetiva nos sintomas de tremor matinal. Continuar monitoramento semanal.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note-form">
+                    <textarea class="note-textarea" placeholder="Adicionar nova anotação..."></textarea>
+                    <div class="note-form-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save btn-icon"></i>
+                            Salvar Anotação
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions Bar -->
+            <div class="actions-bar">
+                <div class="export-btn">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download btn-icon"></i>
+                        Exportar Relatório PDF
+                    </button>
+                </div>
+                
+                <div class="patient-actions">
+                    <a href="paciente_detalhes.html?id=1" class="btn btn-outline">
+                        <i class="fas fa-user btn-icon"></i>
+                        Ver Perfil Completo
+                    </a>
+                    <a href="mensagem_paciente.html?id=1" class="btn btn-primary">
+                        <i class="fas fa-comment-alt btn-icon"></i>
+                        Enviar Mensagem
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Tab Navigation
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Chart Filter
+            const filterOptions = document.querySelectorAll('.filter-option');
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    filterOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

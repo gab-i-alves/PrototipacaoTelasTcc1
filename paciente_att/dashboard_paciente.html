@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Dashboard do Paciente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Layout Principal */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #7e22ce;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+        
+        .sidebar-nav {
+            padding: 1.5rem 0;
+            flex: 1;
+        }
+        
+        .nav-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-group-title {
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #4b5563;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        
+        .nav-link.active {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            border-left-color: #7e22ce;
+        }
+        
+        .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .nav-link.active .nav-icon {
+            color: #7e22ce;
+        }
+        
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-avatar-placeholder {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .user-menu {
+            margin-left: 0.5rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        
+        /* Content */
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .notifications-badge {
+            position: relative;
+        }
+        
+        .notifications-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .header-icon:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+        }
+        
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .stat-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.purple {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+        
+        .stat-icon.green {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .stat-icon.blue {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .stat-icon.yellow {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0.5rem;
+        }
+        
+        .stat-trend.up {
+            color: #10b981;
+        }
+        
+        .stat-trend.down {
+            color: #ef4444;
+        }
+        
+        /* Test Cards */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .view-all {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #7e22ce;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .test-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .test-card-header {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .test-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .test-icon.spiral {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+        
+        .test-icon.voice {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .test-info {
+            flex: 1;
+        }
+        
+        .test-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .test-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .test-card-body {
+            padding: 1.5rem;
+        }
+        
+        .test-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .test-feature:last-child {
+            margin-bottom: 0;
+        }
+        
+        .test-feature-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #10b981;
+            margin-right: 0.75rem;
+            margin-top: 0.125rem;
+        }
+        
+        .test-feature-text {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .test-card-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-block {
+            display: flex;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6b21a8;
+        }
+        
+        .btn-secondary {
+            background-color: #f9fafb;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        /* Recent Activity */
+        .activity-list {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+        
+        .activity-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .activity-item {
+            display: flex;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .activity-icon.completed {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .activity-icon.scheduled {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-meta {
+            display: flex;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .activity-date {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .activity-date-icon, .activity-type-icon {
+            margin-right: 0.25rem;
+        }
+        
+        .activity-type {
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-actions {
+            margin-left: auto;
+        }
+        
+        .activity-action {
+            color: #7e22ce;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* Calendário de agendamentos */
+        .calendar-section {
+            margin-bottom: 2rem;
+        }
+        
+        .calendar-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .calendar-navigation {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .calendar-nav-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-nav-btn:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        
+        .calendar-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            padding: 0.5rem;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .calendar-day {
+            padding: 0.5rem;
+            height: 5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            position: relative;
+        }
+        
+        .calendar-date {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar-event {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .calendar-event.test {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+        
+        .calendar-event.appointment {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .calendar-day.today {
+            background-color: #f3f4f6;
+            border-color: #7e22ce;
+        }
+        
+        .calendar-day.other-month {
+            color: #d1d5db;
+        }
+        
+        /* Adaptação responsiva */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .dashboard-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+                display: none;
+            }
+            
+            .dashboard-overlay.open {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .stats-grid, .test-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-day {
+                height: 4rem;
+            }
+            
+            .calendar-event {
+                display: none;
+            }
+            
+            .activity-item {
+                flex-direction: column;
+            }
+            
+            .activity-icon {
+                margin-bottom: 0.75rem;
+            }
+            
+            .activity-actions {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_paciente.html" class="nav-link active">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="testes_paciente.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Meus Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="resultados_paciente.html" class="nav-link">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Resultados</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Testes Disponíveis</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="teste_espiral.html" class="nav-link">
+                                <i class="fas fa-circle-notch nav-icon"></i>
+                                <span>Teste da Espiral</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="teste_voz.html" class="nav-link">
+                                <i class="fas fa-microphone nav-icon"></i>
+                                <span>Teste de Voz</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="meus_medicos.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span>Meus Médicos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="perfil_paciente.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuracoes_paciente.html" class="nav-link">
+                                <i class="fas fa-cog nav-icon"></i>
+                                <span>Configurações</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">João Silva</div>
+                        <div class="user-status">Paciente</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon" id="notifications-toggle">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">3</div>
+                    </div>
+                    <a href="../common/login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Total de Testes</div>
+                        <div class="stat-icon purple">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-description">
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 8%
+                        </div>
+                        desde o mês passado
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Último Teste</div>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-description">dias atrás</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Médicos Vinculados</div>
+                        <div class="stat-icon green">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-description">
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 1
+                        </div>
+                        desde o mês passado
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Próximo Lembrete</div>
+                        <div class="stat-icon yellow">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-description">dias (15/05/2025)</div>
+                </div>
+            </div>
+            
+            <!-- Testes Disponíveis -->
+            <div class="section-header">
+                <h2 class="section-title">Testes Disponíveis</h2>
+            </div>
+            
+            <div class="test-grid">
+                <div class="test-card">
+                    <div class="test-card-header">
+                        <div class="test-icon spiral">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </div>
+                        <div class="test-info">
+                            <h3 class="test-name">Teste da Espiral</h3>
+                            <p class="test-description">Avaliação de coordenação motora fina</p>
+                        </div>
+                    </div>
+                    <div class="test-card-body">
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Detecção de tremores</p>
+                        </div>
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Análise de coordenação motora</p>
+                        </div>
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Duração média: 2 minutos</p>
+                        </div>
+                    </div>
+                    <div class="test-card-footer">
+                        <a href="teste_espiral.html" class="btn btn-primary btn-block">
+                            <i class="fas fa-play btn-icon"></i>
+                            Realizar Teste
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-card-header">
+                        <div class="test-icon voice">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="test-info">
+                            <h3 class="test-name">Teste de Voz</h3>
+                            <p class="test-description">Análise de distúrbios vocais</p>
+                        </div>
+                    </div>
+                    <div class="test-card-body">
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Detecção de alterações vocais</p>
+                        </div>
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Análise de tremor vocal</p>
+                        </div>
+                        <div class="test-feature">
+                            <i class="fas fa-check-circle test-feature-icon"></i>
+                            <p class="test-feature-text">Duração média: 3 minutos</p>
+                        </div>
+                    </div>
+                    <div class="test-card-footer">
+                        <a href="teste_voz.html" class="btn btn-primary btn-block">
+                            <i class="fas fa-play btn-icon"></i>
+                            Realizar Teste
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

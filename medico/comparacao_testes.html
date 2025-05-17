@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Comparação de Testes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Layout Principal */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #7e22ce;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+        
+        .sidebar-nav {
+            padding: 1.5rem 0;
+            flex: 1;
+        }
+        
+        .nav-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-group-title {
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #4b5563;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        
+        .nav-link.active {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            border-left-color: #7e22ce;
+        }
+        
+        .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .nav-link.active .nav-icon {
+            color: #7e22ce;
+        }
+        
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .user-avatar-placeholder {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .user-menu {
+            margin-left: 0.5rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        
+        /* Content */
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #7e22ce;
+            border: 1px solid #7e22ce;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f5f3ff;
+        }
+        
+        .btn-primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6b21a8;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+        }
+        
+        /* Patient Selection */
+        .patient-selection {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .selection-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .selection-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .selection-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+        
+        .selection-dropdown {
+            position: relative;
+        }
+        
+        .selection-input {
+            width: 100%;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: white;
+            color: #111827;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .selection-input:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+        
+        .selection-icon {
+            color: #6b7280;
+        }
+        
+        .selection-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 250px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .selection-menu.active {
+            display: block;
+        }
+        
+        .selection-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .selection-item:hover {
+            background-color: #f9fafb;
+        }
+        
+        .selection-item:last-child {
+            border-bottom: none;
+        }
+        
+        .selection-item.selected {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            font-weight: 500;
+        }
+        
+        .date-input {
+            width: 100%;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            color: #111827;
+        }
+        
+        .date-input:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+        
+        .selection-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            gap: 1rem;
+        }
+        
+        /* Comparison Visualization */
+        .comparison-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .comparison-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .comparison-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .comparison-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .test-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .test-title {
+            font-weight: 600;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .test-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .test-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .test-image {
+            width: 100%;
+            height: 250px;
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .test-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .metric-card {
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        
+        .metric-title {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .metric-value.improved {
+            color: #059669;
+        }
+        
+        .metric-value.declined {
+            color: #ef4444;
+        }
+        
+        .metric-value.stable {
+            color: #2563eb;
+        }
+        
+        .metric-change {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .metric-change.improved {
+            color: #059669;
+        }
+        
+        .metric-change.declined {
+            color: #ef4444;
+        }
+        
+        .metric-change.stable {
+            color: #2563eb;
+        }
+        
+        .change-icon {
+            margin-right: 0.25rem;
+        }
+        
+        /* Historical Chart */
+        .chart-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .chart-filters {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .chart-filter {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .chart-filter.active {
+            background-color: #7e22ce;
+            color: white;
+        }
+        
+        .chart-area {
+            height: 300px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .legend-color {
+            width: 1rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .legend-color.spiral {
+            background-color: #7e22ce;
+        }
+        
+        .legend-color.voice {
+            background-color: #2563eb;
+        }
+        
+        .legend-color.combined {
+            background-color: #10b981;
+        }
+        
+        .legend-color.threshold {
+            background-color: #ef4444;
+            border-top: 1px dashed #ef4444;
+            border-bottom: 1px dashed #ef4444;
+            height: 0.25rem;
+        }
+        
+        /* Analysis Section */
+        .analysis-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .analysis-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .analysis-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .analysis-subtitle {
+            color: #6b7280;
+        }
+        
+        .analysis-content {
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .analysis-paragraph {
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        .analysis-paragraph:last-child {
+            margin-bottom: 0;
+        }
+        
+        .highlight {
+            background-color: #ddd6fe;
+            padding: 0 0.25rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            color: #7e22ce;
+        }
+        
+        .analysis-recommendations {
+            background-color: #f3f4f6;
+            border-left: 4px solid #7e22ce;
+            padding: 1rem 1.5rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+        
+        .recommendations-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.75rem;
+        }
+        
+        .recommendations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            list-style: none;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .recommendation-icon {
+            color: #7e22ce;
+            margin-top: 0.25rem;
+        }
+        
+        .recommendation-text {
+            flex: 1;
+            color: #4b5563;
+        }
+        
+        /* Notes Section */
+        .notes-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+        
+        .notes-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notes-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .notes-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .note-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .note-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+        
+        .note-textarea:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.1);
+        }
+        
+        .note-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .note-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-author {
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .note-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .note-text {
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+        
+        /* Adaptação responsiva */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .dashboard-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+                display: none;
+            }
+            
+            .dashboard-overlay.open {
+                display: block;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .selection-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .selection-actions {
+                flex-direction: column;
+            }
+            
+            .selection-actions .btn {
+                width: 100%;
+            }
+            
+            .chart-filters {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Principal</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard_medico.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pacientes_medico.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span>Pacientes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Análises</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="testes_medico.html" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <span>Testes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="comparacao_testes.html" class="nav-link active">
+                                <i class="fas fa-chart-line nav-icon"></i>
+                                <span>Comparação de Testes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Gerenciamento</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="vincular_paciente.html" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <span>Vincular Paciente</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../admin/perfil_admin.html" class="nav-link">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                    <div class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Comparação de Testes</h1>
+                <div class="header-actions">
+                    <div class="header-actions">
+                    <div class="notifications-badge">
+                        <div class="header-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notifications-count">5</div>
+                    </div>
+                    <a href="login.html" class="header-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+                </div>
+            </div>
+            
+            <!-- Patient Selection -->
+            <div class="patient-selection">
+                <h2 class="selection-title">Selecionar Testes para Comparação</h2>
+                
+                <div class="selection-grid">
+                    <div class="selection-group">
+                        <label class="selection-label">Paciente</label>
+                        <div class="selection-dropdown">
+                            <button class="selection-input" id="patient-select">
+                                <span>João Silva</span>
+                                <i class="fas fa-chevron-down selection-icon"></i>
+                            </button>
+                            <div class="selection-menu" id="patient-menu">
+                                <div class="selection-item selected">João Silva</div>
+                                <div class="selection-item">Maria Oliveira</div>
+                                <div class="selection-item">Pedro Santos</div>
+                                <div class="selection-item">Ana Ferreira</div>
+                                <div class="selection-item">Carlos Mendes</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="selection-group">
+                        <label class="selection-label">Tipo de Teste</label>
+                        <div class="selection-dropdown">
+                            <button class="selection-input" id="test-type-select">
+                                <span>Teste da Espiral</span>
+                                <i class="fas fa-chevron-down selection-icon"></i>
+                            </button>
+                            <div class="selection-menu" id="test-type-menu">
+                                <div class="selection-item selected">Teste da Espiral</div>
+                                <div class="selection-item">Teste de Voz</div>
+                                <div class="selection-item">Ambos</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="selection-group">
+                        <label class="selection-label">Teste 1 (Mais Recente)</label>
+                        <div class="selection-dropdown">
+                            <button class="selection-input" id="test1-select">
+                                <span>12/05/2025 - 14:30</span>
+                                <i class="fas fa-chevron-down selection-icon"></i>
+                            </button>
+                            <div class="selection-menu" id="test1-menu">
+                                <div class="selection-item selected">12/05/2025 - 14:30</div>
+                                <div class="selection-item">05/05/2025 - 09:15</div>
+                                <div class="selection-item">28/04/2025 - 11:45</div>
+                                <div class="selection-item">21/04/2025 - 16:20</div>
+                                <div class="selection-item">15/04/2025 - 10:30</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="selection-group">
+                        <label class="selection-label">Teste 2 (Anterior)</label>
+                        <div class="selection-dropdown">
+                            <button class="selection-input" id="test2-select">
+                                <span>05/05/2025 - 09:15</span>
+                                <i class="fas fa-chevron-down selection-icon"></i>
+                            </button>
+                            <div class="selection-menu" id="test2-menu">
+                                <div class="selection-item">12/05/2025 - 14:30</div>
+                                <div class="selection-item selected">05/05/2025 - 09:15</div>
+                                <div class="selection-item">28/04/2025 - 11:45</div>
+                                <div class="selection-item">21/04/2025 - 16:20</div>
+                                <div class="selection-item">15/04/2025 - 10:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="selection-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-redo btn-icon"></i>
+                        Redefinir
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search btn-icon"></i>
+                        Comparar Testes
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Test Comparison -->
+            <div class="comparison-container">
+                <div class="comparison-header">
+                    <h2 class="comparison-title">Comparação Visual dos Testes</h2>
+                    <div class="comparison-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-sync-alt btn-icon"></i>
+                            Atualizar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-column">
+                        <div class="test-card">
+                            <div class="test-header">
+                                <div class="test-title">
+                                    <i class="fas fa-circle-notch"></i>
+                                    <span>Teste da Espiral (Mais Recente)</span>
+                                </div>
+                                <div class="test-date">12/05/2025 - 14:30</div>
+                            </div>
+                            <div class="test-content">
+                                <div class="test-image">
+                                    <img src="https://via.placeholder.com/400x250/FFFFFF?text=Espiral+Recente" alt="Teste da Espiral Recente" width="100%">
+                                </div>
+                                <div class="test-metrics">
+                                    <div class="metric-card">
+                                        <div class="metric-title">Pontuação</div>
+                                        <div class="metric-value">68/100</div>
+                                        <div class="metric-change declined">
+                                            <i class="fas fa-arrow-down change-icon"></i>
+                                            <span>-6</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Tremor</div>
+                                        <div class="metric-value declined">3.2mm</div>
+                                        <div class="metric-change declined">
+                                            <i class="fas fa-arrow-up change-icon"></i>
+                                            <span>+0.8mm</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Precisão</div>
+                                        <div class="metric-value declined">74%</div>
+                                        <div class="metric-change declined">
+                                            <i class="fas fa-arrow-down change-icon"></i>
+                                            <span>-6%</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Tempo</div>
+                                        <div class="metric-value">58s</div>
+                                        <div class="metric-change stable">
+                                            <i class="fas fa-equals change-icon"></i>
+                                            <span>+2s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-column">
+                        <div class="test-card">
+                            <div class="test-header">
+                                <div class="test-title">
+                                    <i class="fas fa-circle-notch"></i>
+                                    <span>Teste da Espiral (Anterior)</span>
+                                </div>
+                                <div class="test-date">05/05/2025 - 09:15</div>
+                            </div>
+                            <div class="test-content">
+                                <div class="test-image">
+                                    <img src="https://via.placeholder.com/400x250/FFFFFF?text=Espiral+Anterior" alt="Teste da Espiral Anterior" width="100%">
+                                </div>
+                                <div class="test-metrics">
+                                    <div class="metric-card">
+                                        <div class="metric-title">Pontuação</div>
+                                        <div class="metric-value">74/100</div>
+                                        <div class="metric-change improved">
+                                            <i class="fas fa-arrow-up change-icon"></i>
+                                            <span>+2</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Tremor</div>
+                                        <div class="metric-value">2.4mm</div>
+                                        <div class="metric-change stable">
+                                            <i class="fas fa-equals change-icon"></i>
+                                            <span>-0.1mm</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Precisão</div>
+                                        <div class="metric-value">80%</div>
+                                        <div class="metric-change improved">
+                                            <i class="fas fa-arrow-up change-icon"></i>
+                                            <span>+3%</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Tempo</div>
+                                        <div class="metric-value">56s</div>
+                                        <div class="metric-change stable">
+                                            <i class="fas fa-equals change-icon"></i>
+                                            <span>+1s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Notes Section -->
+            <div class="notes-container">
+                <div class="notes-header">
+                    <h2 class="notes-title">Anotações Médicas</h2>
+                </div>
+                
+                <div class="note-form">
+                    <textarea class="note-textarea" placeholder="Adicionar nova anotação sobre a comparação de testes..."></textarea>
+                    <div class="note-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save btn-icon"></i>
+                            Salvar Anotação
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="notes-content">
+                    <div class="note-card">
+                        <div class="note-header">
+                            <div class="note-author">Dr. Carlos Santos</div>
+                            <div class="note-date">12/05/2025 - 15:30</div>
+                        </div>
+                        <div class="note-text">
+                            A comparação entre os testes indica um possível agravamento do quadro. No entanto, é importante considerar que o paciente relatou ter dormido mal na noite anterior ao teste mais recente, o que pode ter influenciado o resultado. Recomendo repetir o teste em uma semana para confirmar a tendência.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Patient Dropdown
+            const patientSelect = document.getElementById('patient-select');
+            const patientMenu = document.getElementById('patient-menu');
+            const patientItems = patientMenu.querySelectorAll('.selection-item');
+            
+            patientSelect.addEventListener('click', function() {
+                patientMenu.classList.toggle('active');
+            });
+            
+            patientItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const selectedText = this.textContent;
+                    patientSelect.querySelector('span').textContent = selectedText;
+                    patientItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    patientMenu.classList.remove('active');
+                });
+            });
+            
+            // Test Type Dropdown
+            const testTypeSelect = document.getElementById('test-type-select');
+            const testTypeMenu = document.getElementById('test-type-menu');
+            const testTypeItems = testTypeMenu.querySelectorAll('.selection-item');
+            
+            testTypeSelect.addEventListener('click', function() {
+                testTypeMenu.classList.toggle('active');
+            });
+            
+            testTypeItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const selectedText = this.textContent;
+                    testTypeSelect.querySelector('span').textContent = selectedText;
+                    testTypeItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    testTypeMenu.classList.remove('active');
+                });
+            });
+            
+            // Test 1 Dropdown
+            const test1Select = document.getElementById('test1-select');
+            const test1Menu = document.getElementById('test1-menu');
+            const test1Items = test1Menu.querySelectorAll('.selection-item');
+            
+            test1Select.addEventListener('click', function() {
+                test1Menu.classList.toggle('active');
+            });
+            
+            test1Items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const selectedText = this.textContent;
+                    test1Select.querySelector('span').textContent = selectedText;
+                    test1Items.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    test1Menu.classList.remove('active');
+                });
+            });
+            
+            // Test 2 Dropdown
+            const test2Select = document.getElementById('test2-select');
+            const test2Menu = document.getElementById('test2-menu');
+            const test2Items = test2Menu.querySelectorAll('.selection-item');
+            
+            test2Select.addEventListener('click', function() {
+                test2Menu.classList.toggle('active');
+            });
+            
+            test2Items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const selectedText = this.textContent;
+                    test2Select.querySelector('span').textContent = selectedText;
+                    test2Items.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    test2Menu.classList.remove('active');
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!patientSelect.contains(e.target) && !patientMenu.contains(e.target)) {
+                    patientMenu.classList.remove('active');
+                }
+                
+                if (!testTypeSelect.contains(e.target) && !testTypeMenu.contains(e.target)) {
+                    testTypeMenu.classList.remove('active');
+                }
+                
+                if (!test1Select.contains(e.target) && !test1Menu.contains(e.target)) {
+                    test1Menu.classList.remove('active');
+                }
+                
+                if (!test2Select.contains(e.target) && !test2Menu.contains(e.target)) {
+                    test2Menu.classList.remove('active');
+                }
+            });
+            
+            // Chart Filters
+            const chartFilters = document.querySelectorAll('.chart-filter');
+            
+            chartFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    chartFilters.forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Export Button
+            const exportBtn = document.getElementById('export-btn');
+            
+            exportBtn.addEventListener('click', function() {
+                alert('Exportando relatório comparativo em formato PDF...');
+            });
+        });
+    </script>
+</body>
+</html>

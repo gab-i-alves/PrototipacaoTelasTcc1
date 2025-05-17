@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Teste de Voz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #2563eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+        
+        .btn-outline:hover {
+            background-color: #eff6ff;
+        }
+        
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        .test-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .test-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+        
+        /* Step Progress */
+        .step-progress {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+        
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin: 0 auto 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step.active .step-circle {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .step.completed .step-circle {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .step.active .step-label {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .step.completed .step-label {
+            color: #10b981;
+        }
+        
+        /* Step Content */
+        .step-content {
+            display: none;
+            flex: 1;
+        }
+        
+        .step-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Instructions Step */
+        .instructions-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .instructions-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instructions-description {
+            color: #4b5563;
+        }
+        
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .instruction-step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #4b5563;
+            flex-shrink: 0;
+        }
+        
+        .instruction-content {
+            flex: 1;
+        }
+        
+        .instruction-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instruction-description {
+            color: #6b7280;
+        }
+        
+        .instructions-note {
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .note-icon {
+            color: #2563eb;
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+        }
+        
+        .note-content {
+            flex: 1;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .note-content strong {
+            color: #111827;
+        }
+        
+        /* Microphone Setup Step */
+        .microphone-setup-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+        
+        .microphone-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .microphone-description {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+        
+        .microphone-test-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+            padding: 2rem;
+        }
+        
+        .microphone-icon {
+            font-size: 4rem;
+            color: #2563eb;
+            margin-bottom: 1.5rem;
+        }
+        
+        .microphone-status {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+        }
+        
+        .status-indicator.inactive {
+            background-color: #e5e7eb;
+        }
+        
+        .status-indicator.active {
+            background-color: #10b981;
+        }
+        
+        .status-indicator.error {
+            background-color: #ef4444;
+        }
+        
+        .status-text {
+            font-weight: 500;
+        }
+        
+        .status-text.inactive {
+            color: #6b7280;
+        }
+        
+        .status-text.active {
+            color: #10b981;
+        }
+        
+        .status-text.error {
+            color: #ef4444;
+        }
+        
+        .volume-meter {
+            width: 100%;
+            max-width: 400px;
+            height: 1.5rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .volume-level {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #bfdbfe, #2563eb);
+            border-radius: 9999px;
+            transition: width 0.1s ease;
+        }
+        
+        .microphone-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* Recording Step */
+        .recording-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+        
+        .reading-text {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            font-size: 1.125rem;
+            color: #111827;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        
+        .recording-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+        
+        .recording-animation {
+            width: 8rem;
+            height: 8rem;
+            border-radius: 9999px;
+            background-color: rgba(37, 99, 235, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+            }
+        }
+        
+        .recording-icon {
+            font-size: 3rem;
+            color: #2563eb;
+        }
+        
+        .recording-status {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recording-status-icon {
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: #ef4444;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .recording-time {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        .audio-visualization {
+            width: 100%;
+            max-width: 400px;
+            height: 100px;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .audio-bars {
+            display: flex;
+            align-items: center;
+            height: 80%;
+            width: 90%;
+        }
+        
+        .audio-bar {
+            flex: 1;
+            background-color: #2563eb;
+            margin: 0 1px;
+            height: 10%;
+            border-radius: 1px;
+            transition: height 0.1s ease;
+        }
+        
+        .recording-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Results Step */
+        .results-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-description {
+            color: #4b5563;
+        }
+        
+        .results-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 3rem 0;
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid #f3f4f6;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spinner 1s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-text {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .loading-progress {
+            width: 100%;
+            max-width: 300px;
+            height: 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background-color: #2563eb;
+            border-radius: 9999px;
+            width: 0%;
+        }
+        
+        .results-content {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .results-content.active {
+            display: flex;
+        }
+        
+        .results-summary {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .summary-icon.attention {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .summary-icon.normal {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .summary-icon.critical {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+        }
+        
+        .summary-description {
+            text-align: center;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .audio-player {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .player-title {
+            font-weight: 500;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .player-button {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .player-progress {
+            flex: 1;
+            height: 0.5rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .player-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            background-color: #2563eb;
+            border-radius: 9999px;
+        }
+        
+        .player-time {
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            color: #6b7280;
+        }
+        
+        .results-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric-card {
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        
+        .metric-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .metric-value.normal {
+            color: #059669;
+        }
+        
+        .metric-value.attention {
+            color: #d97706;
+        }
+        
+        .metric-value.critical {
+            color: #ef4444;
+        }
+        
+        .waveform-preview {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 150px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+        }
+        
+        .next-steps {
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .next-steps-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.75rem;
+        }
+        
+        .next-steps-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .next-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .next-step-icon {
+            color: #2563eb;
+            margin-top: 0.25rem;
+        }
+        
+        .next-step-content {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* Footer Actions */
+        .test-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 767px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .instructions-container,
+            .microphone-setup-container,
+            .recording-container,
+            .results-container {
+                padding: 1.5rem;
+            }
+            
+            .step-label {
+                font-size: 0.75rem;
+            }
+            
+            .reading-text {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+            
+            .recording-animation {
+                width: 6rem;
+                height: 6rem;
+            }
+            
+            .recording-icon {
+                font-size: 2rem;
+            }
+            
+            .results-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .test-footer .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="dashboard_paciente.html" class="header-logo">
+            <div class="logo-icon">P</div>
+            <div class="logo-text">ParkinsonCheck</div>
+        </a>
+        <div class="header-actions">
+            <a href="dashboard_paciente.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left btn-icon"></i>
+                Voltar ao Dashboard
+            </a>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="test-container">
+            <!-- Test Header -->
+            <div class="test-header">
+                <h1 class="page-title">Teste de Voz</h1>
+                <p class="page-subtitle">Vamos avaliar suas características vocais através da gravação e análise de sua voz.</p>
+            </div>
+            
+            <!-- Step Progress -->
+            <div class="step-progress">
+                <div class="step completed">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">Instruções</div>
+                </div>
+                <div class="step active">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Verificar Microfone</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Gravação</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Resultados</div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Instructions -->
+            <div class="step-content" id="step-1">
+                <div class="instructions-container">
+                    <div>
+                        <h2 class="instructions-title">Como funciona o Teste de Voz?</h2>
+                        <p class="instructions-description">O teste de voz é uma ferramenta que avalia características vocais que podem estar associadas à doença de Parkinson. A análise automática identifica padrões específicos que podem ajudar no diagnóstico e monitoramento.</p>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">1</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Verificação do Microfone</h3>
+                            <p class="instruction-description">Primeiro, vamos verificar se seu microfone está funcionando corretamente. Você precisará permitir o acesso ao microfone quando solicitado.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">2</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Gravação de Voz</h3>
+                            <p class="instruction-description">Você deverá ler em voz alta um texto que será exibido na tela. A gravação tem duração de 30 segundos. É importante manter um tom de voz natural durante toda a leitura.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">3</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Análise e Resultados</h3>
+                            <p class="instruction-description">Nossa tecnologia analisará parâmetros como tremor vocal, qualidade da voz, pausas na fala e outros indicadores importantes. Os resultados serão exibidos logo após o processamento.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instructions-note">
+                        <div class="note-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="note-content">
+                            <strong>Importante:</strong> Realize o teste em um ambiente silencioso, sem ruídos de fundo. Fale em um tom natural, nem muito alto nem muito baixo, e mantenha uma distância de aproximadamente 20 cm entre sua boca e o microfone.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Microphone Setup -->
+            <div class="step-content active" id="step-2">
+                <div class="microphone-setup-container">
+                    <div>
+                        <h2 class="microphone-title">Verificação de Microfone</h2>
+                        <p class="microphone-description">Para uma análise precisa, precisamos verificar se seu microfone está funcionando corretamente. Pedimos sua permissão para acessar o microfone apenas durante este teste.</p>
+                    </div>
+                    
+                    <div class="microphone-test-area">
+                        <div class="microphone-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        
+                        <div class="microphone-status">
+                            <div class="status-indicator inactive" id="status-indicator"></div>
+                            <span class="status-text inactive" id="status-text">Microfone não detectado</span>
+                        </div>
+                        
+                        <div class="volume-meter">
+                            <div class="volume-level" id="volume-level"></div>
+                        </div>
+                        
+                        <p class="microphone-description">Após habilitar o microfone, fale algumas palavras para testar o nível de volume.</p>
+                    </div>
+                    
+                    <div class="microphone-actions">
+                        <button class="btn btn-primary" id="enable-microphone-btn">
+                            <i class="fas fa-microphone btn-icon"></i>
+                            Habilitar Microfone
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Recording -->
+            <div class="step-content" id="step-3">
+                <div class="recording-container">
+                    <div>
+                        <h2 class="microphone-title">Gravação de Voz</h2>
+                        <p class="microphone-description">Leia o texto abaixo em voz alta, mantendo um tom natural. A gravação começará quando você clicar no botão "Iniciar Gravação".</p>
+                    </div>
+                    
+                    <div class="reading-text">
+                        "O sol brilhava intensamente naquela manhã de primavera. As flores do jardim exibiam suas cores vibrantes, enquanto pássaros cantavam alegremente entre as árvores. Maria caminhava tranquilamente pela praça, observando as crianças que brincavam no parque. Ela respirou fundo, sentindo o ar fresco encher seus pulmões. Era um dia perfeito para um passeio ao ar livre."
+                    </div>
+                    
+                    <div class="recording-area">
+                        <div class="recording-animation" id="recording-animation">
+                            <i class="fas fa-microphone recording-icon"></i>
+                        </div>
+                        
+                        <div class="recording-status" id="recording-status">
+                            <div class="recording-status-icon"></div>
+                            <span>Gravando</span>
+                        </div>
+                        
+                        <div class="recording-time" id="recording-time">00:30</div>
+                        
+                        <div class="audio-visualization">
+                            <div class="audio-bars" id="audio-bars">
+                                <!-- Audio bars will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recording-actions">
+                        <button class="btn btn-outline" id="cancel-recording-btn">
+                            <i class="fas fa-times btn-icon"></i>
+                            Cancelar
+                        </button>
+                        <button class="btn btn-primary" id="start-recording-btn">
+                            <i class="fas fa-microphone btn-icon"></i>
+                            Iniciar Gravação
+                        </button>
+                        <button class="btn btn-primary" id="stop-recording-btn" style="display: none;">
+                            <i class="fas fa-stop btn-icon"></i>
+                            Parar Gravação
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Results -->
+            <div class="step-content" id="step-4">
+                <div class="results-container">
+                    <div>
+                        <h2 class="results-title">Analisando sua Voz</h2>
+                        <p class="results-description">Estamos processando os dados do seu teste. Isso levará apenas alguns instantes.</p>
+                    </div>
+                    
+                    <div class="results-loading" id="results-loading">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Analisando características vocais...</div>
+                        <div class="loading-progress">
+                            <div class="loading-progress-bar" id="progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-content" id="results-content">
+                        <div class="results-summary">
+                            <div class="summary-icon attention">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="summary-title">Alterações Vocais Leves Detectadas</div>
+                            <p class="summary-description">
+                                Nossa análise identificou algumas alterações leves em sua voz que podem estar associadas a sintomas iniciais. Recomendamos compartilhar estes resultados com seu médico para uma avaliação mais completa.
+                            </p>
+                        </div>
+                        
+                        <div class="audio-player">
+                            <div class="player-title">Sua Gravação</div>
+                            <div class="player-controls">
+                                <button class="player-button">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div class="player-progress">
+                                    <div class="player-progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="player-time">
+                                <span>00:09</span>
+                                <span>00:30</span>
+                            </div>
+                        </div>
+                        
+                        <div class="waveform-preview">
+                            [Visualização de Onda Sonora]
+                        </div>
+                        
+                        <div class="results-metrics">
+                            <div class="metric-card">
+                                <div class="metric-title">Tremor Vocal</div>
+                                <div class="metric-value attention">Leve (4.2Hz)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Qualidade da Voz</div>
+                                <div class="metric-value normal">Normal (82%)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Estabilidade de Pitch</div>
+                                <div class="metric-value attention">Variação Moderada</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Pausas na Fala</div>
+                                <div class="metric-value normal">Dentro do Normal</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Amplitude da Voz</div>
+                                <div class="metric-value normal">Adequada</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Clareza da Articulação</div>
+                                <div class="metric-value normal">Boa (78%)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="next-steps">
+                            <h3 class="next-steps-title">Próximas Etapas</h3>
+                            <ul class="next-steps-list">
+                                <li class="next-step-item">
+                                    <i class="fas fa-check-circle next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Seu resultado foi armazenado com sucesso e já está disponível para seus médicos vinculados.
+                                    </div>
+                                </li>
+                                <li class="next-step-item">
+                                    <i class="fas fa-calendar-alt next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Recomendamos realizar o teste novamente em 7 dias para monitorar sua evolução.
+                                    </div>
+                                </li>
+                                <li class="next-step-item">
+                                    <i class="fas fa-circle-notch next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Experimente também o Teste da Espiral para uma avaliação mais completa.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="results-actions">
+                            <a href="teste_espiral.html" class="btn btn-outline">
+                                <i class="fas fa-circle-notch btn-icon"></i>
+                                Realizar Teste da Espiral
+                            </a>
+                            <a href="resultado_voz.html" class="btn btn-primary">
+                                <i class="fas fa-chart-line btn-icon"></i>
+                                Ver Análise Detalhada
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Actions -->
+            <div class="test-footer">
+                <button class="btn btn-outline" id="prev-btn">
+                    <i class="fas fa-arrow-left btn-icon"></i>
+                    Anterior
+                </button>
+                <button class="btn btn-primary" id="next-btn">
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                    Próximo
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Step Navigation
+            const steps = document.querySelectorAll('.step');
+            const stepContents = document.querySelectorAll('.step-content');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let currentStep = 1;
+            
+            // Initialize steps visibility
+            updateStepsVisibility();
+            
+            function updateStepsVisibility() {
+                // Update step indicators
+                steps.forEach((step, index) => {
+                    if (index + 1 < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index + 1 === currentStep) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+                
+                // Update step content visibility
+                stepContents.forEach((content, index) => {
+                    if (index + 1 === currentStep) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+                
+                // Update navigation buttons
+                if (currentStep === 1) {
+                    prevBtn.style.visibility = 'hidden';
+                } else {
+                    prevBtn.style.visibility = 'visible';
+                }
+                
+                if (currentStep === steps.length) {
+                    nextBtn.style.visibility = 'hidden';
+                } else {
+                    nextBtn.style.visibility = 'visible';
+                }
+                
+                // Special case for step 4 (results)
+                if (currentStep === 4) {
+                    // Start the progress animation
+                    startProgressAnimation();
+                }
+            }
+            
+            // Navigation handlers
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepsVisibility();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < steps.length) {
+                    currentStep++;
+                    updateStepsVisibility();
+                }
+            });
+            
+            // Microphone setup
+            const enableMicrophoneBtn = document.getElementById('enable-microphone-btn');
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            const volumeLevel = document.getElementById('volume-level');
+            
+            let audioContext;
+            let microphone;
+            let analyser;
+            let microphoneActive = false;
+            
+            enableMicrophoneBtn.addEventListener('click', function() {
+                if (!microphoneActive) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(function(stream) {
+                            microphone = audioContext.createMediaStreamSource(stream);
+                            analyser = audioContext.createAnalyser();
+                            analyser.fftSize = 256;
+                            
+                            microphone.connect(analyser);
+                            
+                            statusIndicator.classList.remove('inactive', 'error');
+                            statusIndicator.classList.add('active');
+                            statusText.classList.remove('inactive', 'error');
+                            statusText.classList.add('active');
+                            statusText.textContent = 'Microfone ativo';
+                            
+                            enableMicrophoneBtn.innerHTML = '<i class="fas fa-check btn-icon"></i> Microfone Habilitado';
+                            enableMicrophoneBtn.disabled = true;
+                            
+                            microphoneActive = true;
+                            
+                            // Start monitoring volume level
+                            updateVolumeMeter();
+                            
+                            // Automatically move to next step after a delay
+                            setTimeout(function() {
+                                currentStep++;
+                                updateStepsVisibility();
+                            }, 3000);
+                        })
+                        .catch(function(err) {
+                            console.error('Error accessing microphone: ', err);
+                            statusIndicator.classList.remove('inactive', 'active');
+                            statusIndicator.classList.add('error');
+                            statusText.classList.remove('inactive', 'active');
+                            statusText.classList.add('error');
+                            statusText.textContent = 'Erro ao acessar o microfone';
+                            
+                            alert('Não foi possível acessar o microfone. Por favor, verifique as permissões do navegador.');
+                        });
+                }
+            });
+            
+            function updateVolumeMeter() {
+                if (!microphoneActive) return;
+                
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                
+                const average = sum / dataArray.length;
+                const volumePercentage = Math.min(100, average * 2); // Scale up a bit for better visualization
+                
+                volumeLevel.style.width = volumePercentage + '%';
+                
+                requestAnimationFrame(updateVolumeMeter);
+            }
+            
+            // Recording functionality
+            const startRecordingBtn = document.getElementById('start-recording-btn');
+            const stopRecordingBtn = document.getElementById('stop-recording-btn');
+            const cancelRecordingBtn = document.getElementById('cancel-recording-btn');
+            const recordingTime = document.getElementById('recording-time');
+            const recordingStatus = document.getElementById('recording-status');
+            const audioBars = document.getElementById('audio-bars');
+            
+            let mediaRecorder;
+            let recordedChunks = [];
+            let recordingInterval;
+            let remainingTime = 30; // 30 seconds recording
+            
+            // Create audio bars
+            for (let i = 0; i < 40; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'audio-bar';
+                audioBars.appendChild(bar);
+            }
+            
+            const audioBarsElements = audioBars.querySelectorAll('.audio-bar');
+            
+            startRecordingBtn.addEventListener('click', function() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(function(stream) {
+                            // Create media recorder
+                            mediaRecorder = new MediaRecorder(stream);
+                            
+                            mediaRecorder.ondataavailable = function(e) {
+                                if (e.data.size > 0) {
+                                    recordedChunks.push(e.data);
+                                }
+                            };
+                            
+                            mediaRecorder.onstop = function() {
+                                // Recording finished
+                                clearInterval(recordingInterval);
+                                
+                                // Move to results step
+                                currentStep++;
+                                updateStepsVisibility();
+                                
+                                // Clean up
+                                stream.getTracks().forEach(track => track.stop());
+                            };
+                            
+                            // Start recording
+                            mediaRecorder.start();
+                            
+                            // Update UI
+                            startRecordingBtn.style.display = 'none';
+                            stopRecordingBtn.style.display = 'inline-flex';
+                            recordingStatus.style.display = 'flex';
+                            
+                            // Reset and start countdown
+                            remainingTime = 30;
+                            updateTimer();
+                            
+                            recordingInterval = setInterval(function() {
+                                remainingTime--;
+                                updateTimer();
+                                
+                                if (remainingTime <= 0) {
+                                    mediaRecorder.stop();
+                                }
+                            }, 1000);
+                            
+                            // Start audio visualization
+                            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                            const analyser = audioContext.createAnalyser();
+                            const source = audioContext.createMediaStreamSource(stream);
+                            
+                            source.connect(analyser);
+                            analyser.fftSize = 256;
+                            
+                            const bufferLength = analyser.frequencyBinCount;
+                            const dataArray = new Uint8Array(bufferLength);
+                            
+                            function animateAudioBars() {
+                                if (mediaRecorder.state === 'inactive') return;
+                                
+                                analyser.getByteFrequencyData(dataArray);
+                                
+                                audioBarsElements.forEach((bar, index) => {
+                                    const barHeight = dataArray[index] ? (dataArray[index] / 255) * 100 : 10;
+                                    bar.style.height = barHeight + '%';
+                                });
+                                
+                                requestAnimationFrame(animateAudioBars);
+                            }
+                            
+                            animateAudioBars();
+                        })
+                        .catch(function(err) {
+                            console.error('Error accessing microphone: ', err);
+                            alert('Não foi possível acessar o microfone. Por favor, verifique as permissões do navegador.');
+                        });
+                }
+            });
+            
+            stopRecordingBtn.addEventListener('click', function() {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+            });
+            
+            cancelRecordingBtn.addEventListener('click', function() {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    recordedChunks = [];
+                }
+                
+                // Reset UI
+                clearInterval(recordingInterval);
+                startRecordingBtn.style.display = 'inline-flex';
+                stopRecordingBtn.style.display = 'none';
+                recordingStatus.style.display = 'none';
+                recordingTime.textContent = '00:30';
+                
+                audioBarsElements.forEach(bar => {
+                    bar.style.height = '10%';
+                });
+            });
+            
+            function updateTimer() {
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                
+                recordingTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Results progress animation
+            function startProgressAnimation() {
+                const progressBar = document.getElementById('progress-bar');
+                const resultsLoading = document.getElementById('results-loading');
+                const resultsContent = document.getElementById('results-content');
+                
+                let width = 0;
+                const interval = setInterval(function() {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show results after loading
+                        setTimeout(function() {
+                            resultsLoading.style.display = 'none';
+                            resultsContent.classList.add('active');
+                        }, 500);
+                    } else {
+                        width += 2;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

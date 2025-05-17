@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Teste da Espiral</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #7e22ce;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #7e22ce;
+            border: 1px solid #7e22ce;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f5f3ff;
+        }
+        
+        .btn-primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6b21a8;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        .test-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .test-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+        
+        /* Step Progress */
+        .step-progress {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+        
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin: 0 auto 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step.active .step-circle {
+            background-color: #7e22ce;
+            color: white;
+        }
+        
+        .step.completed .step-circle {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .step.active .step-label {
+            color: #7e22ce;
+            font-weight: 600;
+        }
+        
+        .step.completed .step-label {
+            color: #10b981;
+        }
+        
+        /* Step Content */
+        .step-content {
+            display: none;
+            flex: 1;
+        }
+        
+        .step-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Instructions Step */
+        .instructions-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .instructions-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instructions-description {
+            color: #4b5563;
+        }
+        
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .instruction-step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #4b5563;
+            flex-shrink: 0;
+        }
+        
+        .instruction-content {
+            flex: 1;
+        }
+        
+        .instruction-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instruction-description {
+            color: #6b7280;
+        }
+        
+        .instructions-note {
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .note-icon {
+            color: #7e22ce;
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+        }
+        
+        .note-content {
+            flex: 1;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .note-content strong {
+            color: #111827;
+        }
+        
+        /* Camera Setup Step */
+        .camera-setup-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+        
+        .camera-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .camera-description {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+        
+        .camera-preview {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .camera-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #6b7280;
+        }
+        
+        .camera-placeholder-icon {
+            font-size: 3rem;
+        }
+        
+        .camera-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .camera-video.active {
+            display: block;
+        }
+        
+        .camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .camera-overlay.active {
+            opacity: 1;
+        }
+        
+        .camera-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* Test Step */
+        .test-step-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+        
+        .spiral-test-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .spiral-canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+        }
+        
+        .spiral-template {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .spiral-drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: crosshair;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: #f9fafb;
+        }
+        
+        .spiral-instructions {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .spiral-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .spiral-timer {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #7e22ce;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Results Step */
+        .results-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-description {
+            color: #4b5563;
+        }
+        
+        .results-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 3rem 0;
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid #f3f4f6;
+            border-top-color: #7e22ce;
+            border-radius: 50%;
+            animation: spinner 1s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-text {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .loading-progress {
+            width: 100%;
+            max-width: 300px;
+            height: 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background-color: #7e22ce;
+            border-radius: 9999px;
+            width: 0%;
+        }
+        
+        .results-content {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .results-content.active {
+            display: flex;
+        }
+        
+        .results-comparison {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .result-col {
+            flex: 1;
+        }
+        
+        .result-col-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .result-image {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+        }
+        
+        .result-score {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .score-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .score-badge.normal {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .score-badge.attention {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .score-badge.critical {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .score-badge i {
+            margin-right: 0.25rem;
+        }
+        
+        .result-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .metric-card {
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        
+        .metric-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .next-steps {
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .next-steps-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.75rem;
+        }
+        
+        .next-steps-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .next-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .next-step-icon {
+            color: #7e22ce;
+            margin-top: 0.25rem;
+        }
+        
+        .next-step-content {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* Footer Actions */
+        .test-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 767px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .instructions-container,
+            .camera-setup-container,
+            .test-step-container,
+            .results-container {
+                padding: 1.5rem;
+            }
+            
+            .step-label {
+                font-size: 0.75rem;
+            }
+            
+            .results-comparison {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .test-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .test-footer .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="dashboard_paciente.html" class="header-logo">
+            <div class="logo-icon">P</div>
+            <div class="logo-text">ParkinsonCheck</div>
+        </a>
+        <div class="header-actions">
+            <a href="dashboard_paciente.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left btn-icon"></i>
+                Voltar ao Dashboard
+            </a>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="test-container">
+            <!-- Test Header -->
+            <div class="test-header">
+                <h1 class="page-title">Teste da Espiral</h1>
+                <p class="page-subtitle">Vamos avaliar a sua coordenação motora através do traçado de uma espiral.</p>
+            </div>
+            
+            <!-- Step Progress -->
+            <div class="step-progress">
+                <div class="step completed">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">Instruções</div>
+                </div>
+                <div class="step active">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Verificar Câmera</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Realizar Teste</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Resultados</div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Instructions -->
+            <div class="step-content" id="step-1">
+                <div class="instructions-container">
+                    <div>
+                        <h2 class="instructions-title">Como funciona o Teste da Espiral?</h2>
+                        <p class="instructions-description">O teste da espiral é uma ferramenta que avalia a coordenação motora fina e pode ajudar na detecção de sintomas relacionados ao Parkinson. Vamos guiá-lo através desse processo.</p>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">1</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Preparação da Câmera</h3>
+                            <p class="instruction-description">Vamos verificar se sua câmera está funcionando corretamente. Você precisará permitir o acesso à câmera quando solicitado.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">2</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Traçado da Espiral</h3>
+                            <p class="instruction-description">Uma espiral será exibida na tela. Usando seu dedo ou mouse, trace por cima da espiral do centro para fora, tentando seguir a linha guia o mais precisamente possível.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-step">
+                        <div class="instruction-step-number">3</div>
+                        <div class="instruction-content">
+                            <h3 class="instruction-title">Análise e Resultados</h3>
+                            <p class="instruction-description">Nosso sistema analisará seu traçado, considerando fatores como tremor, velocidade e precisão. Os resultados serão exibidos imediatamente após a conclusão.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instructions-note">
+                        <div class="note-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="note-content">
+                            <strong>Importante:</strong> Para obter os melhores resultados, realize o teste em um ambiente bem iluminado, sente-se confortavelmente e mantenha uma postura natural. Se estiver usando um dispositivo móvel, apoie-o em uma superfície estável.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Camera Setup -->
+            <div class="step-content active" id="step-2">
+                <div class="camera-setup-container">
+                    <div>
+                        <h2 class="camera-title">Verificação de Câmera</h2>
+                        <p class="camera-description">Para uma análise precisa, precisamos verificar se sua câmera está funcionando corretamente. Pedimos sua permissão para acessar a câmera apenas durante este teste.</p>
+                    </div>
+                    
+                    <div class="camera-preview">
+                        <div class="camera-placeholder" id="camera-placeholder">
+                            <i class="fas fa-video camera-placeholder-icon"></i>
+                            <p>Clique no botão abaixo para habilitar a câmera</p>
+                        </div>
+                        <video class="camera-video" id="camera-video" autoplay playsinline></video>
+                        <div class="camera-overlay" id="camera-overlay">
+                            <div class="btn btn-primary">
+                                <i class="fas fa-camera btn-icon"></i>
+                                Tirar Foto
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-actions">
+                        <button class="btn btn-primary" id="enable-camera-btn">
+                            <i class="fas fa-video btn-icon"></i>
+                            Habilitar Câmera
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Spiral Test -->
+            <div class="step-content" id="step-3">
+                <div class="test-step-container">
+                    <div>
+                        <h2 class="camera-title">Teste da Espiral</h2>
+                        <p class="camera-description">Trace a espiral do centro para fora, seguindo a linha pontilhada o mais precisamente possível. Não se preocupe com a velocidade, mas tente manter um traçado suave.</p>
+                    </div>
+                    
+                    <div class="spiral-instructions">
+                        Comece no centro e trace a espiral para fora
+                    </div>
+                    
+                    <div class="spiral-test-area">
+                        <div class="spiral-canvas-container">
+                            <img src="https://via.placeholder.com/600x400/FFFFFF?text=Espiral+Modelo" alt="Modelo de Espiral" class="spiral-template">
+                            <canvas id="drawing-canvas" class="spiral-drawing-canvas" width="600" height="400"></canvas>
+                            <div class="spiral-timer">01:30</div>
+                        </div>
+                    </div>
+                    
+                    <div class="spiral-actions">
+                        <button class="btn btn-outline" id="clear-btn">
+                            <i class="fas fa-redo btn-icon"></i>
+                            Recomeçar
+                        </button>
+                        <button class="btn btn-primary" id="finish-btn">
+                            <i class="fas fa-check btn-icon"></i>
+                            Finalizar Teste
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Results -->
+            <div class="step-content" id="step-4">
+                <div class="results-container">
+                    <div>
+                        <h2 class="results-title">Analisando seu Teste</h2>
+                        <p class="results-description">Estamos processando os dados do seu teste. Isso levará apenas alguns instantes.</p>
+                    </div>
+                    
+                    <div class="results-loading" id="results-loading">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Analisando desenho da espiral...</div>
+                        <div class="loading-progress">
+                            <div class="loading-progress-bar" id="progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-content" id="results-content">
+                        <div class="results-comparison">
+                            <div class="result-col">
+                                <div class="result-col-title">Seu Traçado</div>
+                                <div class="result-image">
+                                    <img src="https://via.placeholder.com/400x300/FFFFFF?text=Seu+Traçado" alt="Seu Traçado" width="100%">
+                                </div>
+                                <div class="result-score">
+                                    <div class="score-label">Pontuação Geral</div>
+                                    <div class="score-value">85/100</div>
+                                    <div class="score-badge normal">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Normal</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="result-col">
+                                <div class="result-col-title">Modelo de Referência</div>
+                                <div class="result-image">
+                                    <img src="https://via.placeholder.com/400x300/FFFFFF?text=Modelo+de+Referência" alt="Modelo de Referência" width="100%">
+                                </div>
+                                <div class="result-score">
+                                    <div class="score-label">Comparação</div>
+                                    <div class="score-value">92% de similaridade</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-metrics">
+                            <div class="metric-card">
+                                <div class="metric-title">Tremor</div>
+                                <div class="metric-value">Mínimo (1.2mm)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Precisão</div>
+                                <div class="metric-value">Alta (89%)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Velocidade</div>
+                                <div class="metric-value">Normal (46s)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Consistência</div>
+                                <div class="metric-value">Boa (87%)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="next-steps">
+                            <h3 class="next-steps-title">Próximas Etapas</h3>
+                            <ul class="next-steps-list">
+                                <li class="next-step-item">
+                                    <i class="fas fa-check-circle next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Seu resultado foi armazenado com sucesso e já está disponível para seus médicos vinculados.
+                                    </div>
+                                </li>
+                                <li class="next-step-item">
+                                    <i class="fas fa-calendar-alt next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Recomendamos realizar o teste novamente em 7 dias para monitorar sua evolução.
+                                    </div>
+                                </li>
+                                <li class="next-step-item">
+                                    <i class="fas fa-microphone next-step-icon"></i>
+                                    <div class="next-step-content">
+                                        Experimente também o Teste de Voz para uma avaliação mais completa.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="results-actions">
+                            <a href="teste_voz.html" class="btn btn-outline">
+                                <i class="fas fa-microphone btn-icon"></i>
+                                Realizar Teste de Voz
+                            </a>
+                            <a href="resultado_espiral.html" class="btn btn-primary">
+                                <i class="fas fa-chart-line btn-icon"></i>
+                                Ver Análise Detalhada
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Actions -->
+            <div class="test-footer">
+                <button class="btn btn-outline" id="prev-btn">
+                    <i class="fas fa-arrow-left btn-icon"></i>
+                    Anterior
+                </button>
+                <button class="btn btn-primary" id="next-btn">
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                    Próximo
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Step Navigation
+            const steps = document.querySelectorAll('.step');
+            const stepContents = document.querySelectorAll('.step-content');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let currentStep = 1;
+            
+            // Initialize steps visibility
+            updateStepsVisibility();
+            
+            function updateStepsVisibility() {
+                // Update step indicators
+                steps.forEach((step, index) => {
+                    if (index + 1 < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index + 1 === currentStep) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+                
+                // Update step content visibility
+                stepContents.forEach((content, index) => {
+                    if (index + 1 === currentStep) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+                
+                // Update navigation buttons
+                if (currentStep === 1) {
+                    prevBtn.style.visibility = 'hidden';
+                } else {
+                    prevBtn.style.visibility = 'visible';
+                }
+                
+                if (currentStep === steps.length) {
+                    nextBtn.style.visibility = 'hidden';
+                } else {
+                    nextBtn.style.visibility = 'visible';
+                }
+                
+                // Special case for step 4 (results)
+                if (currentStep === 4) {
+                    // Start the progress animation
+                    startProgressAnimation();
+                }
+            }
+            
+            // Navigation handlers
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepsVisibility();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < steps.length) {
+                    currentStep++;
+                    updateStepsVisibility();
+                }
+            });
+            
+            // Camera setup
+            const enableCameraBtn = document.getElementById('enable-camera-btn');
+            const cameraVideo = document.getElementById('camera-video');
+            const cameraPlaceholder = document.getElementById('camera-placeholder');
+            const cameraOverlay = document.getElementById('camera-overlay');
+            
+            enableCameraBtn.addEventListener('click', function() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(function(stream) {
+                            cameraVideo.srcObject = stream;
+                            cameraVideo.classList.add('active');
+                            cameraPlaceholder.style.display = 'none';
+                            enableCameraBtn.textContent = 'Câmera Habilitada ✓';
+                            enableCameraBtn.disabled = true;
+                            
+                            // Show the camera overlay after a short delay
+                            setTimeout(function() {
+                                cameraOverlay.classList.add('active');
+                            }, 2000);
+                            
+                            // Automatically move to next step after camera is enabled
+                            setTimeout(function() {
+                                currentStep++;
+                                updateStepsVisibility();
+                                
+                                // Stop the camera stream when moving to the next step
+                                const tracks = stream.getTracks();
+                                tracks.forEach(track => track.stop());
+                            }, 4000);
+                        })
+                        .catch(function(error) {
+                            console.error('Error accessing the camera: ', error);
+                            alert('Não foi possível acessar a câmera. Por favor, verifique as permissões do navegador.');
+                        });
+                } else {
+                    alert('Seu navegador não suporta o acesso à câmera.');
+                }
+            });
+            
+            // Drawing canvas setup
+            const canvas = document.getElementById('drawing-canvas');
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            
+            // Set up canvas
+            function setupCanvas() {
+                // Make canvas responsive
+                function resizeCanvas() {
+                    const container = canvas.parentElement;
+                    const ratio = canvas.width / canvas.height;
+                    
+                    const newWidth = container.offsetWidth;
+                    const newHeight = newWidth / ratio;
+                    
+                    canvas.style.width = newWidth + 'px';
+                    canvas.style.height = newHeight + 'px';
+                }
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                
+                // Set up drawing
+                ctx.strokeStyle = '#7e22ce';
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                
+                // Mouse events
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+                
+                // Touch events
+                canvas.addEventListener('touchstart', startDrawingTouch);
+                canvas.addEventListener('touchmove', drawTouch);
+                canvas.addEventListener('touchend', stopDrawing);
+            }
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                draw(e);
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            }
+            
+            function startDrawingTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                isDrawing = true;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            
+            function drawTouch(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+                ctx.beginPath();
+            }
+            
+            // Clear canvas button
+            const clearBtn = document.getElementById('clear-btn');
+            clearBtn.addEventListener('click', function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // Finish test button
+            const finishBtn = document.getElementById('finish-btn');
+            finishBtn.addEventListener('click', function() {
+                currentStep++;
+                updateStepsVisibility();
+            });
+            
+            // Results progress animation
+            function startProgressAnimation() {
+                const progressBar = document.getElementById('progress-bar');
+                const resultsLoading = document.getElementById('results-loading');
+                const resultsContent = document.getElementById('results-content');
+                
+                let width = 0;
+                const interval = setInterval(function() {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show results after loading
+                        setTimeout(function() {
+                            resultsLoading.style.display = 'none';
+                            resultsContent.classList.add('active');
+                        }, 500);
+                    } else {
+                        width += 2;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 100);
+            }
+            
+            // Initialize the canvas when the DOM is loaded
+            setupCanvas();
+        });
+    </script>
+</body>
+</html>
