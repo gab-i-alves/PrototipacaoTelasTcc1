@@ -472,7 +472,7 @@
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="index.html" class="logo">
+                <a href="dashboard_medico.html" class="logo">
                     <div class="logo-icon">P</div>
                     <div class="logo-text">ParkinsonCheck</div>
                 </a>
@@ -1300,6 +1300,168 @@
     
     <!-- Mobile Menu Overlay -->
     <div class="dashboard-overlay" id="dashboard-overlay"></div>
+
+    <!-- User Menu Modal -->
+    <div class="modal-overlay" id="user-menu-modal">
+        <div class="modal" style="max-width: 300px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Menu do Administrador</h3>
+                <div class="modal-close" id="user-menu-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <a href="perfil_medico.html" class="user-menu-item active">
+                    <i class="fas fa-user-circle"></i>
+                    Meu Perfil
+                </a>
+                <a href="../common/login.html" class="user-menu-item danger">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifications Modal -->
+    <div class="modal-overlay" id="notifications-modal">
+        <div class="modal notifications-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Notificações</h3>
+                <div class="modal-close" id="notifications-modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="all">Todas</div>
+                        <div class="tab" data-tab="unread">Não lidas (5)</div>
+                    </div>
+                    
+                    <div class="notifications-list">
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Ricardo Martins enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dra. Patrícia Souza enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>3 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon user">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Novo usuário cadastrado</div>
+                                <div class="notification-message">João Silva completou seu cadastro como usuário no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Fernando Costa enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>12 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Unread) -->
+                        <div class="notification-item unread">
+                            <div class="notification-icon doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Nova solicitação de cadastro médico</div>
+                                <div class="notification-message">Dr. Gustavo Santos enviou uma solicitação de cadastro no sistema.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>20 horas atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon approval">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico aprovado</div>
+                                <div class="notification-message">Dr. Carlos Santos foi aprovado no sistema. Email de confirmação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 dia atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Item (Read) -->
+                        <div class="notification-item">
+                            <div class="notification-icon reject">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">Médico suspenso</div>
+                                <div class="notification-message">Dr. Marcos Oliveira foi suspenso do sistema. Email de notificação enviado.</div>
+                                <div class="notification-date">
+                                    <i class="far fa-clock"></i>
+                                    <span>2 dias atrás</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-btn">
+                            <span>Ver todas notificações</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="mark-all-read-btn">
+                    <i class="fas fa-check-double btn-icon"></i>
+                    Marcar todas como lidas
+                </button>
+                <button class="btn btn-outline" id="notifications-close-btn">Fechar</button>
+            </div>
+        </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1326,6 +1488,50 @@
             document.querySelectorAll('input[type="date"]')[1].valueAsDate = today;
             document.querySelectorAll('input[type="date"]')[0].valueAsDate = oneMonthAgo;
             
+            // User Menu Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userMenuModal = document.getElementById('user-menu-modal');
+            const userMenuModalClose = document.getElementById('user-menu-modal-close');
+            
+            userMenuToggle.addEventListener('click', function() {
+                userMenuModal.classList.add('open');
+            });
+            
+            function closeUserMenuModal() {
+                userMenuModal.classList.remove('open');
+            }
+            
+            userMenuModalClose.addEventListener('click', closeUserMenuModal);
+            userMenuModal.addEventListener('click', function(e) {
+                if (e.target === userMenuModal) {
+                    closeUserMenuModal();
+                }
+            });
+            
+            // Notifications Toggle
+            const notificationsToggle = document.getElementById('notifications-toggle');
+            const notificationsModal = document.getElementById('notifications-modal');
+            const notificationsModalClose = document.getElementById('notifications-modal-close');
+            const notificationsCloseBtn = document.getElementById('notifications-close-btn');
+            
+            notificationsToggle.addEventListener('click', function() {
+                notificationsModal.classList.add('open');
+            });
+            
+            function closeNotificationsModal() {
+                notificationsModal.classList.remove('open');
+            }
+            
+            notificationsModalClose.addEventListener('click', closeNotificationsModal);
+            notificationsCloseBtn.addEventListener('click', closeNotificationsModal);
+            notificationsModal.addEventListener('click', function(e) {
+                if (e.target === notificationsModal) {
+                    closeNotificationsModal();
+                }
+            });
+            
+            
+
             // Tab Navigation
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');

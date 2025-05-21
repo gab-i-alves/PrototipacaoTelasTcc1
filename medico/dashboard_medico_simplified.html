@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Dashboard Médico</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+        
+        /* Layout Principal */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Simplificada */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #7e22ce;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 20px;
+            color: #111827;
+        }
+        
+        .nav-menu {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #4b5563;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        
+        .nav-item.active {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            border-left-color: #7e22ce;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+        }
+        
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .btn-icon:hover {
+            background-color: #f9fafb;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        /* Cards de Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.purple {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+        
+        .stat-icon.blue {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .stat-icon.green {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .stat-icon.yellow {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .stat-value {
+            font-size: 30px;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-change.positive {
+            color: #059669;
+        }
+        
+        .stat-change.negative {
+            color: #ef4444;
+        }
+        
+        /* Seções de Conteúdo */
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .btn-text {
+            color: #7e22ce;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .btn-text:hover {
+            text-decoration: underline;
+        }
+        
+        /* Alertas */
+        .alerts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .alert-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+        }
+        
+        .alert-item.critical {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+        }
+        
+        .alert-icon {
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        
+        .alert-description {
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .alert-action {
+            align-self: center;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6b21a8;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+        
+        /* Atividades Recentes */
+        .activity-list {
+            padding: 0;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            align-items: center;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon.test {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .activity-icon.patient {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        
+        .activity-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Simplificada -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard_medico.html" class="nav-item active">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pacientes_medico.html" class="nav-item">
+                    <i class="fas fa-users nav-icon"></i>
+                    <span>Pacientes</span>
+                </a>
+                <a href="testes_medico.html" class="nav-item">
+                    <i class="fas fa-clipboard-list nav-icon"></i>
+                    <span>Testes</span>
+                </a>
+                <a href="perfil_medico.html" class="nav-item">
+                    <i class="fas fa-user-circle nav-icon"></i>
+                    <span>Meu Perfil</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div>
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-role">Neurologista</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <header class="header">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="btn-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content">
+                <!-- Cards de Estatísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Total de Pacientes</div>
+                                <div class="stat-value">23</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>2 novos este mês</span>
+                                </div>
+                            </div>
+                            <div class="stat-icon purple">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Testes Realizados</div>
+                                <div class="stat-value">87</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>12 esta semana</span>
+                                </div>
+                            </div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Pacientes Ativos</div>
+                                <div class="stat-value">19</div>
+                                <div class="stat-change">
+                                    <span>82% do total</span>
+                                </div>
+                            </div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Requerem Atenção</div>
+                                <div class="stat-value">4</div>
+                                <div class="stat-change negative">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+1 desde ontem</span>
+                                </div>
+                            </div>
+                            <div class="stat-icon yellow">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alertas Importantes -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Alertas Importantes</h2>
+                        <a href="pacientes_medico.html" class="btn-text">Ver todos</a>
+                    </div>
+                    <div class="alerts-container">
+                        <div class="alert-item critical">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Pedro Santos - Deterioração Significativa</div>
+                                <div class="alert-description">Último teste da espiral mostrou declínio de 15% em relação ao anterior</div>
+                            </div>
+                            <div class="alert-action">
+                                <a href="testes_medico.html?paciente=3" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i>
+                                    Ver Detalhes
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-item">
+                            <div class="alert-icon">
+                                <i class="fas fa-clock" style="color: #d97706;"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">João Silva - Teste Atrasado</div>
+                                <div class="alert-description">Último teste realizado há mais de 30 dias</div>
+                            </div>
+                            <div class="alert-action">
+                                <a href="pacientes_medico.html?id=1&action=message" class="btn btn-secondary">
+                                    <i class="fas fa-envelope"></i>
+                                    Notificar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Atividades Recentes -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Atividades Recentes</h2>
+                        <a href="testes_medico.html" class="btn-text">Ver todas</a>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon test">
+                                <i class="fas fa-circle-notch"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Novo teste de espiral - Maria Oliveira</div>
+                                <div class="activity-meta">Pontuação: 84/100 • Estável</div>
+                            </div>
+                            <div class="activity-time">Há 2 horas</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon patient">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Novo paciente vinculado</div>
+                                <div class="activity-meta">Ana Ferreira • 65 anos</div>
+                            </div>
+                            <div class="activity-time">Há 5 horas</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon test">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Novo teste de voz - Carlos Mendes</div>
+                                <div class="activity-meta">Pontuação: 82/100 • Melhora de 2%</div>
+                            </div>
+                            <div class="activity-time">Ontem</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

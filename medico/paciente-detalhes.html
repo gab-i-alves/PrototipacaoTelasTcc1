@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinsonCheck - Detalhes do Paciente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Layout Principal */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #7e22ce;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #111827;
+        }
+        
+        .sidebar-nav {
+            padding: 1.5rem 0;
+            flex: 1;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #4b5563;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        
+        .nav-link.active {
+            background-color: #f3f4f6;
+            color: #7e22ce;
+            border-left-color: #7e22ce;
+        }
+        
+        .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .nav-link.active .nav-icon {
+            color: #7e22ce;
+        }
+        
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+        
+        .user-avatar-placeholder {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Content */
+        .content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        /* Patient Info Section */
+        .patient-info-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .patient-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .patient-avatar-large {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .patient-avatar-large i {
+            font-size: 1.5rem;
+            color: #9ca3af;
+        }
+        
+        .patient-details {
+            flex: 1;
+        }
+        
+        .patient-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .patient-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.stable {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .status-badge.attention {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .status-badge.critical {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .status-badge i {
+            margin-right: 0.25rem;
+        }
+        
+        /* Tests Section */
+        .section-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .test-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #7e22ce;
+            color: white;
+        }
+        
+        .tests-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .tests-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .tests-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .tests-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .tests-table tr:hover td {
+            background-color: #f9fafb;
+        }
+        
+        .test-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .test-type-badge.spiral {
+            background-color: #ede9fe;
+            color: #7e22ce;
+        }
+        
+        .test-type-badge.voice {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .test-type-badge i {
+            margin-right: 0.375rem;
+        }
+        
+        .test-score {
+            font-weight: 500;
+        }
+        
+        .test-score.high {
+            color: #059669;
+        }
+        
+        .test-score.medium {
+            color: #d97706;
+        }
+        
+        .test-score.low {
+            color: #ef4444;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            color: #6b7280;
+        }
+        
+        .action-btn:hover {
+            background-color: #f9fafb;
+            color: #7e22ce;
+            border-color: #7e22ce;
+        }
+        
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .modal-close {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            background-color: #f3f4f6;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .modal-close:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .test-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .test-visualization {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            text-align: center;
+            background-color: #f9fafb;
+        }
+        
+        .test-visualization img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .test-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .metric-card {
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        
+        .metric-title {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .notes-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .notes-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .add-note-btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+        
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .note-item {
+            padding: 1rem;
+            background-color: #f9fafb;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-author {
+            font-weight: 500;
+            color: #111827;
+        }
+        
+        .note-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .note-text {
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+        
+        .note-form {
+            display: none;
+            margin-bottom: 1rem;
+        }
+        
+        .note-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .compare-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .compare-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+        
+        /* Adaptação responsiva */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .dashboard-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+                display: none;
+            }
+            
+            .dashboard-overlay.open {
+                display: block;
+            }
+            
+            .test-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .patient-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .test-filter {
+                flex-wrap: wrap;
+            }
+            
+            .tests-table {
+                font-size: 0.75rem;
+            }
+            
+            .tests-table th,
+            .tests-table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="medico-dashboard.html" class="logo">
+                    <div class="logo-icon">P</div>
+                    <div class="logo-text">ParkinsonCheck</div>
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="medico-dashboard.html" class="nav-link active">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="vincular-paciente-simplificado.html" class="nav-link">
+                            <i class="fas fa-user-plus nav-icon"></i>
+                            <span>Vincular Paciente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../common/login.html" class="nav-link">
+                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                            <span>Sair</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <div class="user-avatar-placeholder">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">Dr. Carlos Santos</div>
+                        <div class="user-status">Neurologista</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1 class="page-title">Detalhes do Paciente</h1>
+                <div class="header-actions">
+                    <a href="medico-dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left btn-icon"></i>
+                        Voltar
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Patient Info -->
+            <div class="patient-info-card">
+                <div class="patient-header">
+                    <div class="patient-avatar-large">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="patient-details">
+                        <h2 class="patient-name">João Silva</h2>
+                        <div class="patient-meta">
+                            <span><i class="fas fa-birthday-cake"></i> 67 anos</span>
+                            <span><i class="fas fa-phone"></i> (41) 99876-5432</span>
+                            <span><i class="fas fa-envelope"></i> joao.silva@email.com</span>
+                            <div class="status-badge attention">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Requer atenção</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tests Section -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Testes Realizados</h2>
+                    <div class="test-filter">
+                        <button class="filter-btn active" data-filter="all">Todos</button>
+                        <button class="filter-btn" data-filter="spiral">Espiral</button>
+                        <button class="filter-btn" data-filter="voice">Voz</button>
+                    </div>
+                </div>
+                
+                <table class="tests-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Pontuação</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12/05/2025 - 14:30</td>
+                            <td>
+                                <div class="test-type-badge spiral">
+                                    <i class="fas fa-circle-notch"></i>
+                                    <span>Espiral</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="test-score medium">68/100</span>
+                            </td>
+                            <td>
+                                <div class="test-actions">
+                                    <button class="action-btn" onclick="openTestDetails('spiral', '12/05/2025', 68)" title="Ver detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="openCompareModal('spiral')" title="Comparar">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>07/05/2025 - 09:45</td>
+                            <td>
+                                <div class="test-type-badge voice">
+                                    <i class="fas fa-microphone"></i>
+                                    <span>Voz</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="test-score medium">72/100</span>
+                            </td>
+                            <td>
+                                <div class="test-actions">
+                                    <button class="action-btn" onclick="openTestDetails('voice', '07/05/2025', 72)" title="Ver detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="openCompareModal('voice')" title="Comparar">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>05/05/2025 - 09:15</td>
+                            <td>
+                                <div class="test-type-badge spiral">
+                                    <i class="fas fa-circle-notch"></i>
+                                    <span>Espiral</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="test-score medium">74/100</span>
+                            </td>
+                            <td>
+                                <div class="test-actions">
+                                    <button class="action-btn" onclick="openTestDetails('spiral', '05/05/2025', 74)" title="Ver detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="openCompareModal('spiral')" title="Comparar">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>28/04/2025 - 11:45</td>
+                            <td>
+                                <div class="test-type-badge voice">
+                                    <i class="fas fa-microphone"></i>
+                                    <span>Voz</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="test-score medium">75/100</span>
+                            </td>
+                            <td>
+                                <div class="test-actions">
+                                    <button class="action-btn" onclick="openTestDetails('voice', '28/04/2025', 75)" title="Ver detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="openCompareModal('voice')" title="Comparar">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test Details Modal -->
+    <div class="modal-backdrop" id="test-details-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Detalhes do Teste - <span id="test-type-title">Espiral</span></h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="test-detail-grid">
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Visualização</h3>
+                        <div class="test-visualization">
+                            <img id="test-image" src="https://via.placeholder.com/400x300/FFFFFF?text=Teste+Espiral" alt="Visualização do teste">
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Métricas</h3>
+                        <div class="test-metrics">
+                            <div class="metric-card">
+                                <div class="metric-title">Pontuação</div>
+                                <div class="metric-value" id="metric-score">68/100</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title" id="metric-1-title">Tremor</div>
+                                <div class="metric-value" id="metric-1-value">3.2mm</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title" id="metric-2-title">Precisão</div>
+                                <div class="metric-value" id="metric-2-value">74%</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title" id="metric-3-title">Tempo</div>
+                                <div class="metric-value" id="metric-3-value">58s</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="notes-section">
+                    <div class="notes-header">
+                        <h3 class="notes-title">Anotações</h3>
+                        <button class="add-note-btn" onclick="toggleNoteForm()">
+                            <i class="fas fa-plus"></i> Adicionar Nota
+                        </button>
+                    </div>
+                    
+                    <div class="note-form" id="note-form">
+                        <textarea class="note-textarea" placeholder="Digite sua anotação aqui..."></textarea>
+                        <div class="note-actions">
+                            <button class="btn btn-secondary" onclick="toggleNoteForm()">Cancelar</button>
+                            <button class="btn btn-primary" onclick="saveNote()">Salvar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="notes-list">
+                        <div class="note-item">
+                            <div class="note-header">
+                                <span class="note-author">Dr. Carlos Santos</span>
+                                <span class="note-date">12/05/2025 - 15:30</span>
+                            </div>
+                            <p class="note-text">
+                                Observa-se aumento na amplitude do tremor. Paciente relatou ter dormido mal na noite anterior ao teste.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Compare Tests Modal -->
+    <div class="modal-backdrop" id="compare-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Comparar Testes - <span id="compare-type-title">Espiral</span></h2>
+                <button class="modal-close" onclick="closeCompareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="compare-section">
+                    <div style="flex: 1;">
+                        <h3>Selecione o primeiro teste:</h3>
+                        <select class="form-select" id="test1-select">
+                            <option>12/05/2025 - 14:30 (68/100)</option>
+                            <option>05/05/2025 - 09:15 (74/100)</option>
+                            <option>21/04/2025 - 16:20 (72/100)</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3>Selecione o segundo teste:</h3>
+                        <select class="form-select" id="test2-select">
+                            <option>05/05/2025 - 09:15 (74/100)</option>
+                            <option>21/04/2025 - 16:20 (72/100)</option>
+                            <option>15/04/2025 - 10:30 (77/100)</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="compare-btn" onclick="performComparison()">
+                        <i class="fas fa-chart-line"></i> Comparar Testes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="dashboard-overlay" id="dashboard-overlay"></div>
+    
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('dashboard-overlay');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            });
+            
+            // Filter buttons
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    filterTests(filter);
+                });
+            });
+        });
+        
+        function filterTests(type) {
+            const rows = document.querySelectorAll('.tests-table tbody tr');
+            rows.forEach(row => {
+                if (type === 'all') {
+                    row.style.display = '';
+                } else {
+                    const testType = row.querySelector('.test-type-badge').classList.contains(type);
+                    row.style.display = testType ? '' : 'none';
+                }
+            });
+        }
+        
+        function openTestDetails(type, date, score) {
+            const modal = document.getElementById('test-details-modal');
+            const typeTitle = document.getElementById('test-type-title');
+            const testImage = document.getElementById('test-image');
+            const metricScore = document.getElementById('metric-score');
+            
+            typeTitle.textContent = type === 'spiral' ? 'Espiral' : 'Voz';
+            metricScore.textContent = score + '/100';
+            
+            if (type === 'spiral') {
+                testImage.src = 'https://via.placeholder.com/400x300/FFFFFF?text=Teste+Espiral';
+                document.getElementById('metric-1-title').textContent = 'Tremor';
+                document.getElementById('metric-1-value').textContent = '3.2mm';
+                document.getElementById('metric-2-title').textContent = 'Precisão';
+                document.getElementById('metric-2-value').textContent = '74%';
+                document.getElementById('metric-3-title').textContent = 'Tempo';
+                document.getElementById('metric-3-value').textContent = '58s';
+            } else {
+                testImage.src = 'https://via.placeholder.com/400x300/FFFFFF?text=Teste+de+Voz';
+                document.getElementById('metric-1-title').textContent = 'Jitter';
+                document.getElementById('metric-1-value').textContent = '2.8%';
+                document.getElementById('metric-2-title').textContent = 'Shimmer';
+                document.getElementById('metric-2-value').textContent = '6.2%';
+                document.getElementById('metric-3-title').textContent = 'HNR';
+                document.getElementById('metric-3-value').textContent = '13.5 dB';
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('test-details-modal').style.display = 'none';
+        }
+        
+        function openCompareModal(type) {
+            const modal = document.getElementById('compare-modal');
+            const typeTitle = document.getElementById('compare-type-title');
+            
+            typeTitle.textContent = type === 'spiral' ? 'Espiral' : 'Voz';
+            modal.style.display = 'flex';
+        }
+        
+        function closeCompareModal() {
+            document.getElementById('compare-modal').style.display = 'none';
+        }
+        
+        function toggleNoteForm() {
+            const form = document.getElementById('note-form');
+            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+        }
+        
+        function saveNote() {
+            const textarea = document.querySelector('.note-textarea');
+            const notesList = document.querySelector('.notes-list');
+            
+            if (textarea.value.trim()) {
+                const noteItem = document.createElement('div');
+                noteItem.className = 'note-item';
+                noteItem.innerHTML = `
+                    <div class="note-header">
+                        <span class="note-author">Dr. Carlos Santos</span>
+                        <span class="note-date">${new Date().toLocaleDateString('pt-BR')} - ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <p class="note-text">${textarea.value}</p>
+                `;
+                
+                notesList.insertBefore(noteItem, notesList.firstChild);
+                textarea.value = '';
+                toggleNoteForm();
+            }
+        }
+        
+        function performComparison() {
+            // In a real application, this would navigate to a comparison view
+            alert('Abrindo comparação de testes...');
+            closeCompareModal();
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal-backdrop') {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
